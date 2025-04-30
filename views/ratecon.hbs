@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: Arial, sans-serif; font-size: 14px; margin: 0; padding: 0; }
+    .container { padding: 20px; border: 1px solid #ccc; width: 800px; margin: auto; }
+    .header, .section, .footer { border-bottom: 1px solid #ccc; padding: 10px 0; }
+    .flex { display: flex; justify-content: space-between; flex-wrap: wrap; }
+    .field { margin-bottom: 5px; }
+    .bold { font-weight: bold; }
+    .logo { height: 60px; }
+    .table { width: 100%; margin-top: 10px; }
+    .table td { padding: 4px; vertical-align: top; }
+    .signature { height: 60px; border-bottom: 1px solid #000; width: 300px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header flex">
+      <div><img src="logo.png" alt="Logo" class="logo"></div>
+      <div>
+        <div class="field bold">{{data.client}}</div>
+        <div class="field">{{data.clientAddress}}</div>
+        <div class="field">+1 (253) 237-2479</div>
+      </div>
+      <div>
+        <div class="field"><b>Shipment#</b> {{data.dispatch}}</div>
+        <div class="field"><b>Load Type:</b> {{data.loadType}}</div>
+        <div class="field"><b>Shipper Type:</b> {{data.shiptype}}</div>
+        <div class="field"><b>Receiver Type:</b> {{data.receivertype}}</div>
+      </div>
+    </div>
+
+    <!-- Carrier & Equipment -->
+    <div class="section">
+      <div class="flex">
+        <div>
+          <div class="bold">Carrier - {{data.carrier}}</div>
+          <div><b>MC#</b> {{data.carriermc}}</div>
+          <div>{{data.carrieraddress}}</div>
+        </div>
+        <div>
+          <div class="bold">Equipment Information</div>
+          <div>Truck: {{data.truck}} | Trailer: {{data.trailer}}</div>
+          <div>Driver: {{data.drivera}} | Cell: {{data.cella}}</div>
+          <div>Driver: {{data.driverb}} | Cell: {{data.cellb}}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Locations -->
+    <div class="section flex">
+      <div style="width: 65%;">
+        <div class="bold">Locations</div>
+        <div>Pick Up Address: {{data.pickaddress}}<br>{{data.pickcity}}, {{data.pickState}}</div>
+        <div style="margin-top: 10px;">
+          Delivery Address: {{data.receiveraddress}}<br>{{data.receivercity}}, {{data.receiverState}}
+        </div>
+      </div>
+      <div style="width: 30%;">
+        <div class="bold">APPOINTMENT TIMES</div>
+        <div>Pick Up Date: {{data.pudate}}</div>
+        <div>Delivery Date: {{data.deliveryDate}}</div>
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="section flex">
+      <div>Email: dispatch@handatransportation.com</div>
+      <div>Booked by: {{data.contact}}</div>
+    </div>
+
+    <!-- Rate -->
+    <div class="section flex">
+      <div>
+        <div class="bold">RATE DETAILS</div>
+        <div>Line Haul - {{data.gross}}</div>
+        <div>Total - {{data.gross}}</div>
+      </div>
+      <div style="text-align: center;">
+        <div><b>All invoices must include signed proof of delivery and supporting documents.</b></div>
+        <div>Please email to Accounting@handatransportation.com or send to:<br><br>
+          Alpha Lion Truck<br>23406 Pacific Ave S, Ste 106 Kent, WA 98032
+        </div>
+      </div>
+    </div>
+
+    <!-- Signature -->
+    <div class="footer flex">
+      <div>
+        <div class="bold">Carrier Signature</div>
+        <div class="signature"></div>
+      </div>
+      <div>
+        <div class="bold">Date</div>
+        <div class="signature"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+{{! This is a template for generating a rate confirmation document. }}
+{{! The data object should contain all the necessary fields used in the template. }}
+{{! Ensure to replace 'logo.png' with the actual path to your logo image. }}
