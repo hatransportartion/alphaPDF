@@ -3,26 +3,43 @@ const path = require('path');
 const handlebars = require('handlebars');
 const puppeteer = require('puppeteer');
 
-// Load template and data
-const templateHtml = fs.readFileSync(path.join(__dirname, 'ratecon.hbs'), 'utf8');
-const data = JSON.parse(fs.readFileSync(path.join(__dirname, 'data.json'), 'utf8'));
+async function generatePDF(templateID, data, outputPath = 'output.pdf') {
+  try {
+    const templatePath = path.join(__dirname, 'views', `${templateID}.hbs`);
+    outputPath = path.join(__dirname, 'PDFs', `${templateID}.pdf`);
+    // Ensure template file exists
+    if (!fs.existsSync(templatePath)) {
+      throw new Error(`❌ Template file "${templateID}.hbs" not found in /views`);
+    }
 
-// Compile Handlebars template
-const template = handlebars.compile(templateHtml);
-const html = template(data);
+    const templateHtml = fs.readFileSync(templatePath, 'utf8');
+    const template = handlebars.compile(templateHtml);
+    const html = template(data);
 
-// Generate PDF using Puppeteer
-(async () => {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
+    const browser = await puppeteer.launch({
+      headless: 'new',
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
 
-  await page.setContent(html, { waitUntil: 'networkidle0' });
-  await page.pdf({
-    path: 'output.pdf',
-    format: 'A4',
-    printBackground: true
-  });
+    const page = await browser.newPage();
+    await page.setContent(html, { waitUntil: 'networkidle0' });
+    await page.setViewport({ width: 1200, height: 800 });
+    await page.pdf({
+      path: outputPath,
+      format: 'A4',
+      printBackground: true,
+      margin: { top: '20px', bottom: '20px', left: '20px', right: '20px' }
+    });
 
-  await browser.close();
-  console.log('✅ PDF Generated: output.pdf');
-})();
+    await browser.close();
+    console.log(`✅ PDF generated: ${outputPath}`);
+    return { error: false, message: `PDF generated successfully`, path: outputPath };
+  } catch (err) {
+    console.error(`❌ Error generating PDF: ${err.message}`);
+    throw err;
+  }
+}
+
+module.exports = {
+  generatePDF
+};

@@ -17,9 +17,8 @@ app.use(helmet());
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'views')));
+app.use(express.static(path.join(__dirname, 'logo')));
 app.engine('hbs', exphbs.engine({ extname: '.hbs', defaultLayout: false }));
-
 app.set('view engine', 'hbs');
 
 app.get('/', (req, res) => {
@@ -36,6 +35,7 @@ app.use((req, res, next) => {
   next();
 });
 
+
 app.use('/api', route );
 
 //Error Handler
@@ -49,4 +49,4 @@ app.use((req, res, next) => {
 
 app.listen(port, () => {
   console.log(`Alpha PDF app listening on port ${port}`)
-})
+});
