@@ -5,8 +5,14 @@ const path = require('path');
 const { validateRequestBody } = require("./utility");
 const { generatePDF } = require("./generate");
 
-router.post("/generate", async (req, res) => {
-    console.log(" /get Route: ");
+const dotenv = require("dotenv").config();
+const asyncHandler = require('express-async-handler');
+
+const { mergeAndSavePDFs } = require("./utility/pdfmerging");
+const { generateUniqueFilename } = require("./utility/service");
+
+router.post("/generate", asyncHandler( async (req, res) => {
+    console.log(" /generate Route: ");
     const requestBody = req.body;
     if (!requestBody) {
       return res.status(400).json({ error: true, message: "Request body is required" });
@@ -35,6 +41,27 @@ router.post("/generate", async (req, res) => {
     });
 
 
-  });
+  }));
+
+router.post("/merge", asyncHandler(async (req, res) => {
+    const requestBody = req.body;
+    const fileName = generateUniqueFilename();
+    let outputFilePath = `/home/app/docs/${fileName}.pdf`;
+    console.log(process.env.NODE_ENV);
+    const NODE_ENV = process.env.NODE_ENV || 'local';
+    console.log("NODE_ENV: ", NODE_ENV);
+    console.log("Output File Path: ", outputFilePath);
+    if(NODE_ENV === 'local') {
+      outputFilePath = `docs/${fileName}.pdf`;
+    }
+    console.log("Output File Path: ", outputFilePath);
+    const resp = await mergeAndSavePDFs(requestBody.docURLs, outputFilePath)
+    res.status(200).json({
+      error: false,
+      message: "PDFs merged successfully",
+      data: resp,
+    });
+    console.log("PDFs merged successfully.");
+  }));
 
 module.exports = router;

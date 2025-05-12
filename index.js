@@ -8,7 +8,7 @@ const path = require('path');
 const helmet = require('helmet');
 
 const env = require('dotenv').config();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 9000;
 
 const route = require('./route');
 
@@ -21,22 +21,17 @@ app.use(express.static(path.join(__dirname, 'logo')));
 app.engine('hbs', exphbs.engine({ extname: '.hbs', defaultLayout: false }));
 app.set('view engine', 'hbs');
 
-app.get('/', (req, res) => {
-  res.send('Welcome to the Future');
-})
-
 //LOg middleware
 app.use((req, res, next) => {
   //log date in PST format
   const date = new Date();
   const options = { timeZone: 'America/Los_Angeles', hour12: false };
   const dateString = date.toLocaleString('en-US', options);
-  console.log(`${dateString} ${req.method} ${req.url}`);
+  console.log(`${dateString} ${req.ip}, ${req.hostname} ${req.url} ${req.method}`);
   next();
 });
 
-
-app.use('/', route );
+app.use('/pdf', route );
 
 //Error Handler
 app.use((err, req, res, next) => {
