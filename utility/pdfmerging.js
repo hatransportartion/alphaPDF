@@ -1,5 +1,6 @@
 const fs = require("fs");
 const { PDFDocument } = require("pdf-lib");
+const { generateUniqueFilename } = require("../utility/service");
 
 async function mergePDFs(pdfPaths, outputPath) {
   console.log("MergePDFs --->> ", pdfPaths);
@@ -10,8 +11,8 @@ async function mergePDFs(pdfPaths, outputPath) {
   const pdfDoc = await PDFDocument.create();
 
   for (const pdfPath of pdfPaths) {
-    const URL = pdfPath.url.replace("http://", "https://");
-    const imageBytes = await fetch(URL, {
+    // const URL = pdfPath.url.replace("http://", "https://");
+    const imageBytes = await fetch(pdfPath.url, {
       method: "GET",
     }).then((res) => res.arrayBuffer()).catch((err) => {
       console.error("Error fetching PDF:", err);
@@ -66,20 +67,28 @@ async function mergePDFs(pdfPaths, outputPath) {
 
   const mergedPdfBytes = await pdfDoc.save();
 
-  fs.writeFileSync(outputPath, mergedPdfBytes);
-
-  return outputPath;
+  return mergedPdfBytes;
 }
 
-async function mergeAndSavePDFs(pdfPaths, outputPath) {
+async function mergeAndSavePDFs(pdfPaths) {
   try {
-    console.log("Merging and saving PDFs -->> ", outputPath);
-    const mergedFileName = await mergePDFs(pdfPaths, outputPath);
+    console.log("Merging and saving PDFs -->> ");
+    const fileName = generateUniqueFilename();
+    let outputFilePath = `/home/app/docs/${fileName}.pdf`;
+    const NODE_ENV = process.env.NODE_ENV || 'local';
+    console.log("NODE_ENV: ", NODE_ENV);
+    console.log("Output File Path: ", outputFilePath);
+    if(NODE_ENV === 'local') {
+      outputFilePath = `PDFs/${fileName}.pdf`;
+    }
+    console.log("Output File Path: ", outputFilePath);
+    const mergedPdfBytes = await mergePDFs(pdfPaths, outputFilePath);
+    fs.writeFileSync(outputFilePath, mergedPdfBytes);
     console.log(
       "PDFs merged successfully. Merged file saved at:",
-      mergedFileName
+      outputFilePath
     );
-    return mergedFileName;
+    return fileName;
   } catch (error) {
     console.error("Error merging PDFs:", error);
     throw error;

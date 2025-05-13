@@ -9,7 +9,6 @@ const dotenv = require("dotenv").config();
 const asyncHandler = require('express-async-handler');
 
 const { mergeAndSavePDFs } = require("./utility/pdfmerging");
-const { generateUniqueFilename } = require("./utility/service");
 
 router.post("/generate", asyncHandler( async (req, res) => {
     console.log(" /generate Route: ");
@@ -46,16 +45,7 @@ router.post("/generate", asyncHandler( async (req, res) => {
 
 router.post("/merge", asyncHandler(async (req, res) => {
     const requestBody = req.body;
-    const fileName = generateUniqueFilename();
-    let outputFilePath = `/home/app/docs/${fileName}.pdf`;
-    const NODE_ENV = process.env.NODE_ENV || 'local';
-    console.log("NODE_ENV: ", NODE_ENV);
-    console.log("Output File Path: ", outputFilePath);
-    if(NODE_ENV === 'local') {
-      outputFilePath = `PDFs/${fileName}.pdf`;
-    }
-    console.log("Output File Path: ", outputFilePath);
-    const resp = await mergeAndSavePDFs(requestBody.docURLs, outputFilePath)
+    const resp = await mergeAndSavePDFs(requestBody.docURLs)
     res.status(200).json({
       error: false,
       message: "PDFs merged successfully",
