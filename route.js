@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const path = require('path');
 
-const { validateRequestBody } = require("./utility");
+const { validateRequestBody } = require("./utility/validate");
 const { generatePDF } = require("./generate");
 
 const dotenv = require("dotenv").config();
@@ -28,7 +28,8 @@ router.post("/generate", asyncHandler( async (req, res) => {
     console.log("Template ID: ", templateID);
     console.log("Data: ", data);
 
-    const resp = await generatePDF(templateID, data);
+    const fileName = generateUniqueFilename();
+    const resp = await generatePDF(fileName, data);
     console.log("Response: ", resp);
 
     const PDFpath = path.join(__dirname, 'PDFs', `${recordID}.pdf`);
@@ -47,12 +48,11 @@ router.post("/merge", asyncHandler(async (req, res) => {
     const requestBody = req.body;
     const fileName = generateUniqueFilename();
     let outputFilePath = `/home/app/docs/${fileName}.pdf`;
-    console.log(process.env.NODE_ENV);
     const NODE_ENV = process.env.NODE_ENV || 'local';
     console.log("NODE_ENV: ", NODE_ENV);
     console.log("Output File Path: ", outputFilePath);
     if(NODE_ENV === 'local') {
-      outputFilePath = `docs/${fileName}.pdf`;
+      outputFilePath = `PDFs/${fileName}.pdf`;
     }
     console.log("Output File Path: ", outputFilePath);
     const resp = await mergeAndSavePDFs(requestBody.docURLs, outputFilePath)

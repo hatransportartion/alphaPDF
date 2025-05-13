@@ -10,9 +10,14 @@ async function mergePDFs(pdfPaths, outputPath) {
   const pdfDoc = await PDFDocument.create();
 
   for (const pdfPath of pdfPaths) {
-    const imageBytes = await fetch(pdfPath.url, {
+    const URL = pdfPath.url.replace("http://", "https://");
+    const imageBytes = await fetch(URL, {
       method: "GET",
-    }).then((res) => res.arrayBuffer());
+    }).then((res) => res.arrayBuffer()).catch((err) => {
+      console.error("Error fetching PDF:", err);
+      throw new Error("Error fetching PDF");
+    }
+    );
     console.log(imageBytes);
 
     if (
@@ -61,13 +66,9 @@ async function mergePDFs(pdfPaths, outputPath) {
 
   const mergedPdfBytes = await pdfDoc.save();
 
-  //sanitize the output path
-  const sanitizedOutputPath = outputPath.replace(/[^a-zA-Z0-9_.-]/g, "_");
-  console.log("Sanitized Output Path: ", sanitizedOutputPath);
+  fs.writeFileSync(outputPath, mergedPdfBytes);
 
-  fs.writeFileSync(sanitizedOutputPath, mergedPdfBytes);
-
-  return sanitizedOutputPath;
+  return outputPath;
 }
 
 async function mergeAndSavePDFs(pdfPaths, outputPath) {

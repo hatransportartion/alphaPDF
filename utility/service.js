@@ -66,7 +66,7 @@ async function getAllAttahcmentURL(requestBody) {
 
 function generateUniqueFilename() {
   const uniqueId = uuidv4();  // Generate unique UUID
-  return `${uniqueId}.pdf`;  // Combine UUID with the file extension
+  return `${uniqueId}`;  // Combine UUID with the file extension
 }
 
 module.exports = {
