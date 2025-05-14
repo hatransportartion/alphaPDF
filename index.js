@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const helmet = require('helmet');
 
-const env = require('dotenv').config();
+require('dotenv').config();
 const port = process.env.PORT || 9000;
 
 const route = require('./route');
@@ -33,15 +33,20 @@ app.use((req, res, next) => {
 
 app.use('/pdf', route );
 
-//Error Handler
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something Broke!');
-});
+//Route not found
 app.use((req, res, next) => {
-    res.status(404).send('Sorry, that route does not exist.');
+  res.status(404).json({ error: 'Route not found' });
 });
 
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something went wrong' });
+});
+
+
+// Start the server
 app.listen(port, () => {
   console.log(`Alpha PDF app listening on port ${port}`)
 });

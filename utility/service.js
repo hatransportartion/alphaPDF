@@ -1,4 +1,4 @@
-const { getRecordById } = require("../at");
+const { getRecordById } = require("./at");
 const path = require("path");
 const uuidv4 = require("uuid").v4;
 
@@ -69,8 +69,23 @@ function generateUniqueFilename() {
   return `${uniqueId}`;  // Combine UUID with the file extension
 }
 
+async function isValidURL(url) {
+  try {
+    const urlObj = new URL(url);
+    const allowedProtocols = ["https:"];
+    const isValidProtocol = allowedProtocols.includes(urlObj.protocol);
+    const isValidDomain = urlObj.hostname.endsWith("airtableusercontent.com");
+
+    return isValidProtocol && isValidDomain;
+
+  } catch (error) {
+    return false;
+  }
+}
+
 module.exports = {
   validateRequestBody,
   getAllAttahcmentURL,
-  generateUniqueFilename
+  generateUniqueFilename,
+  isValidURL
 };

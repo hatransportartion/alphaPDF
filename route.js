@@ -3,12 +3,13 @@ const router = express.Router();
 const path = require('path');
 
 const { validateRequestBody } = require("./utility/validate");
-const { generatePDF } = require("./generate");
+const { generatePDF } = require("./utility/generate");
 
 const dotenv = require("dotenv").config();
 const asyncHandler = require('express-async-handler');
 
 const { mergeAndSavePDFs } = require("./utility/pdfmerging");
+const { isValidURL } = require("./utility/service");
 
 router.post("/generate", asyncHandler( async (req, res) => {
     console.log(" /generate Route: ");
@@ -45,7 +46,20 @@ router.post("/generate", asyncHandler( async (req, res) => {
 
 router.post("/merge", asyncHandler(async (req, res) => {
     const requestBody = req.body;
-    const resp = await mergeAndSavePDFs(requestBody.docURLs)
+    const docURLs = requestBody.docURLs;
+
+    // Validate and sanitize the URLs
+    if (!Array.isArray(docURLs)) {
+      return res.status(400).json({ error: true, message: "docURLs must be an array" });
+    }
+
+    const validURLs = docURLs.filter(url => isValidURL(url));
+    if (validURLs.length === 0) {
+      return res.status(400).json({ error: true, message: "No valid or trusted URLs provided" });
+    }
+
+    //Merge and save PDFs
+    const resp = await mergeAndSavePDFs(validURLs);
     res.status(200).json({
       error: false,
       message: "PDFs merged successfully",
