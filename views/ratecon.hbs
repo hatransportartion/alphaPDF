@@ -1,196 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
   <title>Rate Confirmation</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      color: #333;
       margin: 0;
       padding: 0;
-      background: #f7f7f7;
-      color: #333;
-      font-size: 14px;
     }
-
     .container {
-      background: #fff;
       max-width: 900px;
-      margin: 20px auto;
+      margin: auto;
       padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
     }
-
-    .header, .section, .footer {
-      border-bottom: 1px solid #ddd;
-      padding: 20px 0;
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #000;
+      padding-bottom: 10px;
     }
-
-    .flex {
+    .header .logo {
+      height: 150px;
+    }
+    .company-info {
+      text-align: right;
+    }
+    .company-info .name {
+      font-weight: bold;
+      font-size: 18px;
+      text-transform: uppercase;
+    }
+    .section {
+      padding: 15px 0;
+      border-bottom: 1px solid #ccc;
+    }
+    .section-title {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .row {
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 20px;
     }
-
-    .client-block {
-      text-align: center;
+    .col {
       flex: 1;
+      min-width: 250px;
     }
-
-
     .field {
       margin-bottom: 6px;
     }
-
-    .bold {
-      font-weight: bold;
+    .rate-box {
+      background: #f2f2f2;
+      padding: 10px;
+      border: 1px solid #ccc;
     }
-
-    .logo {
-      height: 100px;
-      object-fit: contain;
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 40px;
     }
-
-    .client-name {
-      font-size: 22px;
-      font-weight: 700;
-      color: #2c3e50;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-
-    .table {
-      width: 100%;
-      margin-top: 10px;
-      border-collapse: collapse;
-    }
-
-    .table td {
-      padding: 6px;
-      vertical-align: top;
-    }
-
-    .signature {
-      height: 60px;
+    .signature-line {
       border-bottom: 1px solid #000;
-      width: 300px;
+      width: 250px;
+      height: 40px;
+    }
+    .watermark {
+      position: fixed;
+      top: 30%;
+      left: 40%;
+      transform: translate(-50%, -50%) rotate(-30deg);;
+      opacity: 0.3;
+      z-index: 0;
+      width: 400px;
+      height: auto;
+      pointer-events: none;
     }
 
-    @media (max-width: 768px) {
-      .flex {
-        flex-direction: column;
-      }
-
-      .signature {
-        width: 100%;
-      }
-
-      .logo {
-        height: 80px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .container {
-        padding: 15px;
-      }
-
-      .section, .footer, .header {
-        padding: 15px 0;
-      }
-    }
   </style>
 </head>
 <body>
+  <img src="data:image/png;base64,{{data.logoBase64}}" class="watermark" alt="Watermark" />
+
   <div class="container">
     <!-- Header -->
-    <div class="header flex">
-      <div><img src="./logo/HAlogo.png" alt="Logo" class="logo"></div>
-      
-      <div class="client-block">
-        <div class="client-name">{{data.client}}</div>
-        <div class="field">{{data.clientAddress}}</div>
-        <div class="field">+1 (253) 237-2479</div>
-      </div>
-      
-      <div>
-        <div class="field bold">Shipment#: {{data.dispatch}}</div>
-        <div class="field"><b>Load Type:</b> {{data.loadType}}</div>
-        <div class="field"><b>Shipper Type:</b> {{data.shiptype}}</div>
-        <div class="field"><b>Receiver Type:</b> {{data.receivertype}}</div>
-      </div>
-    </div>
-    
-
-    <!-- Carrier & Equipment -->
-    <div class="section">
-      <div class="flex">
-        <div>
-          <div class="bold">Carrier: {{data.carrier}}</div>
-          <div><b>MC#</b> {{data.carriermc}}</div>
-          <div>{{data.carrieraddress}}</div>
-        </div>
-        <div>
-          <div class="bold">Equipment Information</div>
-          <div>Truck: {{data.truck}} | Trailer: {{data.trailer}}</div>
-          <div>Driver: {{data.drivera}} | Cell: {{data.cella}}</div>
-          <div>Driver: {{data.driverb}} | Cell: {{data.cellb}}</div>
-        </div>
+    <div class="header">
+      <div><img src="data:image/png;base64,{{data.logoBase64}}" class="logo" /></div>
+      <div class="company-info">
+        <div class="name">HA TRANSPORTATION NW LLC</div>
+        <div>23406 Pacific Ave S, Ste 106</div>
+        <div>Kent, WA 98032</div>
+        <div>+1 (253) 237-2479</div>
       </div>
     </div>
 
-    <!-- Locations -->
-    <div class="section flex">
-      <div style="flex: 1;">
-        <div class="bold">Locations</div>
-        <div>Pick Up Address:<br> {{data.pickaddress}}<br>{{data.pickcity}}, {{data.pickState}}</div>
+    <!-- Shipment & Carrier Info -->
+    <div class="section row">
+      <div class="col">
+        <div class="section-title">Shipment Info</div>
+        <div class="field"><b>Shipment: </b> {{data.dispatch}}</div>
+        <div class="field"><b>Load Type: </b> {{data.loadType}}</div>
+        <div class="field"><b>Shipper Type: </b> {{data.shiptype}}</div>
+        <div class="field"><b>Receiver Type: </b> {{data.receivertype}}</div>
+      </div>
+      <div class="col">
+        <div class="section-title">Carrier Info</div>
+        <div class="field"><b>Carrier: </b> {{data.carrier}}</div>
+        <div class="field"><b>MC: </b> {{data.carriermc}}</div>
+        <div class="field">{{data.carrieraddress}}</div>
+        <div class="field"><b>Truck: </b> {{data.truck}}</div>
+        <div class="field">Trailer: {{data.carrieraddress}}</div>
+        <div class="field"><b>Driver A: </b> {{data.drivera}} | <b>Cell:</b> {{data.cella}}</div>
+        <div class="field"><b>Driver B: </b> {{data.driverb}} | <b>Cell:</b> {{data.cellb}}</div>
+      </div>
+    </div>
+
+    <!-- Appointment & Locations -->
+    <div class="section row">
+      <div class="col">
+        <div class="section-title">Locations</div>
+        <div><b>Pick Up Address: </b><br>{{data.pickaddress}}<br>{{data.pickcity}}, {{data.pickState}}</div>
+        <div style="margin-top: 10px;"><b>Delivery Address: </b><br>{{data.receiveraddress}}<br>{{data.receivercity}}, {{data.receiverState}}</div>
+      </div>
+      <div class="col">
+        <div class="section-title">Appointment Times</div>
+        <div class="field"><b>Pick Up Date:</b> {{data.pudate}}</div>
+        <div class="field"><b>Delivery Date:</b> {{data.deliveryDate}}</div>
+      </div>
+    </div>
+
+    <!-- Contact & Rate -->
+    <div class="section row">
+      <div class="col">
+        <div class="field"><b>Email: </b> dispatch@handatransportation.com</div>
+        <div class="field"><b>Booked By: </b> {{data.contact}}</div>
+      </div>
+      <div class="col rate-box">
+        <div><b>Rate Details</b></div>
+        <div class="field">Line Haul: {{data.gross}}</div>
+        <div class="field"><b>Total: {{data.gross}}</b></div>
         <div style="margin-top: 10px;">
-          Delivery Address:<br> {{data.receiveraddress}}<br>{{data.receivercity}}, {{data.receiverState}}
-        </div>
-      </div>
-      <div style="flex: 1;">
-        <div class="bold">Appointment Times</div>
-        <div>Pick Up Date: {{data.pudate}}</div>
-        <div>Delivery Date: {{data.deliveryDate}}</div>
-      </div>
-    </div>
-
-    <!-- Contact -->
-    <div class="section flex">
-      <div>Email: dispatch@handatransportation.com</div>
-      <div>Booked by: {{data.contact}}</div>
-    </div>
-
-    <!-- Rate -->
-    <div class="section flex">
-      <div>
-        <div class="bold">Rate Details</div>
-        <div>Line Haul: {{data.gross}}</div>
-        <div>Total: {{data.gross}}</div>
-      </div>
-      <div style="text-align: center;">
-        <div><b>All invoices must include signed proof of delivery and supporting documents.</b></div>
-        <div style="margin-top: 10px;">
-          Please email to: <br>
-          Accounting@handatransportation.com <br>
-          or mail to:<br> 23406 Pacific Ave S, Ste 106 Kent, WA 98032
+          All invoices must include signed proof of delivery and supporting documents.<br />
+          Please email to: Accounting@handatransportation.com<br />
+          or mail to: 23406 Pacific Ave S, Ste 106, Kent, WA 98032
         </div>
       </div>
     </div>
 
     <!-- Signature -->
-    <div class="footer flex">
+    <div class="footer">
       <div>
-        <div class="bold">Carrier Signature</div>
-        <div class="signature"></div>
+        <div><b>Signature</b></div>
+        <div class="signature-line"></div>
       </div>
       <div>
-        <div class="bold">Date</div>
-        <div class="signature"></div>
+        <div><b>Date</b></div>
+        <div class="signature-line"></div>
       </div>
     </div>
   </div>

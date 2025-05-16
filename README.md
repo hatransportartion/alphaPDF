@@ -8,6 +8,10 @@ alphaPDF is a Node.js library designed to simplify the generation and manipulati
 - Easy-to-use API for seamless integration.
 - Lightweight and fast.
 
+##Postman Documentation
+Link - 
+https://documenter.getpostman.com/view/40179091/2sB2qUnjnc
+
 
 ## Contributing
 Contributions are welcome! To contribute:

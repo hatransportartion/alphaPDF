@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const path = require('path');
 
-const { validateRequestBody } = require("./utility/validate");
+const { validateGenerateRequestBody } = require("./utility/validate");
 const { generatePDF } = require("./utility/generate");
 
 const dotenv = require("dotenv").config();
@@ -12,13 +12,13 @@ const { mergeAndSavePDFs } = require("./utility/pdfmerging");
 const { isValidURL } = require("./utility/service");
 
 router.post("/generate", asyncHandler( async (req, res) => {
-    console.log(" /generate Route: ");
+    
     const requestBody = req.body;
     if (!requestBody) {
       return res.status(400).json({ error: true, message: "Request body is required" });
     }
   
-    const { error, message } = await validateRequestBody(requestBody);
+    const { error, message } = await validateGenerateRequestBody(requestBody);
     if (error) {
       return res.status(400).json({ error: true, message });
     }
@@ -28,8 +28,7 @@ router.post("/generate", asyncHandler( async (req, res) => {
     console.log("Template ID: ", templateID);
     console.log("Data: ", data);
 
-    const fileName = generateUniqueFilename();
-    const resp = await generatePDF(fileName, data);
+    const resp = await generatePDF(templateID, data);
     console.log("Response: ", resp);
 
     const PDFpath = path.join(__dirname, 'PDFs', `${recordID}.pdf`);

@@ -1,4 +1,4 @@
-async function validateRequestBody(requestBody){
+async function validateGenerateRequestBody(requestBody){
     const { templateID, data } = requestBody;
     console.log("ValidateRequestBody() -->> ", JSON.stringify(requestBody));
     if (!templateID) {
@@ -20,10 +20,6 @@ async function validateRequestBody(requestBody){
     return { error: null };
 }
 
-const os = require('os');
-console.log(os.cpus().length); // 4
-
-
 module.exports = {
-    validateRequestBody
+    validateGenerateRequestBody
 };

@@ -6,6 +6,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
 const helmet = require('helmet');
+const os = require('os');
 
 require('dotenv').config();
 const port = process.env.PORT || 9000;
@@ -49,4 +50,5 @@ app.use((err, req, res, next) => {
 // Start the server
 app.listen(port, () => {
   console.log(`Alpha PDF app listening on port ${port}`)
+  console.log("Number of OS CPU: ", os.cpus().length); // 4
 });
