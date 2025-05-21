@@ -120,10 +120,24 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.AttachmentScalarFieldEnum = {
+  id: 'id',
+  templateId: 'templateId',
+  type: 'type',
+  fileName: 'fileName',
+  fileType: 'fileType',
+  storageType: 'storageType',
+  fileData: 'fileData',
+  fileUrl: 'fileUrl',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.PDFTemplateScalarFieldEnum = {
   id: 'id',
   templateName: 'templateName',
   templateId: 'templateId',
+  content: 'content',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -133,13 +147,38 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
-exports.Prisma.PDFTemplateOrderByRelevanceFieldEnum = {
-  templateName: 'templateName',
-  templateId: 'templateId'
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
 };
 
+exports.Prisma.AttachmentOrderByRelevanceFieldEnum = {
+  templateId: 'templateId',
+  fileName: 'fileName',
+  fileType: 'fileType',
+  fileData: 'fileData',
+  fileUrl: 'fileUrl'
+};
+
+exports.Prisma.PDFTemplateOrderByRelevanceFieldEnum = {
+  templateName: 'templateName',
+  templateId: 'templateId',
+  content: 'content'
+};
+exports.AttachmentType = exports.$Enums.AttachmentType = {
+  logo: 'logo',
+  image: 'image',
+  pdf: 'pdf',
+  other: 'other'
+};
+
+exports.StorageType = exports.$Enums.StorageType = {
+  BASE64: 'BASE64',
+  URL: 'URL'
+};
 
 exports.Prisma.ModelName = {
+  Attachment: 'Attachment',
   PDFTemplate: 'PDFTemplate'
 };
 

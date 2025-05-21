@@ -4,7 +4,7 @@ const handlebars = require('handlebars');
 const puppeteer = require('puppeteer');
 const { generateUniqueFilename } = require('./service');
 
-async function generatePDF(templateID, data) {
+async function generatePDF(templateJSON, data) {
   try {
     const fileName = generateUniqueFilename();
     let outputFilePath = `/home/app/docs/${fileName}.pdf`;
@@ -15,21 +15,20 @@ async function generatePDF(templateID, data) {
       outputFilePath = `PDFs/${fileName}.pdf`;
     }
     console.log("Output File Path: ", outputFilePath);
-    console.log("DIrr Name ", __dirname);
-    const templatePath = path.join(__dirname, '../views', `${templateID}.hbs`);
+    // console.log("DIrr Name ", __dirname);
+    // const templatePath = path.join(__dirname, '../views', `${templateID}.hbs`);
 
-    // Ensure template file exists
-    if (!fs.existsSync(templatePath)) {
-      throw new Error(`❌ Template file "${templateID}.hbs" not found in /views`);
-    }
+    // // Ensure template file exists
+    // if (!fs.existsSync(templatePath)) {
+    //   throw new Error(`❌ Template file "${templateID}.hbs" not found in /views`);
+    // }
 
-    const logoPath = path.resolve(__dirname, '../logo/HAlogo.png');
-    const logoBase64 = fs.readFileSync(logoPath, 'base64');
-    data.logoBase64 = logoBase64;
+    // const logoPath = path.resolve(__dirname, '../logo/HAlogo.png');
+    // const logoBase64 = fs.readFileSync(logoPath, 'base64');
+    // data.logoBase64 = logoBase64;
 
 
-    const templateHtml = fs.readFileSync(templatePath, 'utf8');
-    const template = handlebars.compile(templateHtml);
+    const template = handlebars.compile(templateJSON.content);
     const html = template({data});
 
     const browser = await puppeteer.launch({
@@ -49,7 +48,7 @@ async function generatePDF(templateID, data) {
 
     await browser.close();
     console.log(`✅ PDF generated: ${outputFilePath}`);
-    return { error: false, message: `PDF generated successfully`, path: outputFilePath };
+    return { error: false, message: `PDF generated successfully`, path: outputFilePath, fileName: fileName };
   } catch (err) {
     console.error(`❌ Error generating PDF: ${err.message}`);
     throw err;

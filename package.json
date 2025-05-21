@@ -11,7 +11,10 @@
     "prepare": "npx prisma generate",
     "sync-db": "npx prisma db push",
     "start": "npm run install-all && npm run prepare && npm run sync-db && node index.js",
-    "dev": "nodemon index.js"
+    "dev": "npm run install-all && npm run prepare && npm run sync-db && nodemon index.js"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   },
   "devDependencies": {
     "nodemon": "^3.1.10",

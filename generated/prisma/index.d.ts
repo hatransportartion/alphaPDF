@@ -14,10 +14,46 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 
 /**
+ * Model Attachment
+ * 
+ */
+export type Attachment = $Result.DefaultSelection<Prisma.$AttachmentPayload>
+/**
  * Model PDFTemplate
  * 
  */
 export type PDFTemplate = $Result.DefaultSelection<Prisma.$PDFTemplatePayload>
+
+/**
+ * Enums
+ */
+export namespace $Enums {
+  export const AttachmentType: {
+  logo: 'logo',
+  image: 'image',
+  pdf: 'pdf',
+  other: 'other'
+};
+
+export type AttachmentType = (typeof AttachmentType)[keyof typeof AttachmentType]
+
+
+export const StorageType: {
+  BASE64: 'BASE64',
+  URL: 'URL'
+};
+
+export type StorageType = (typeof StorageType)[keyof typeof StorageType]
+
+}
+
+export type AttachmentType = $Enums.AttachmentType
+
+export const AttachmentType: typeof $Enums.AttachmentType
+
+export type StorageType = $Enums.StorageType
+
+export const StorageType: typeof $Enums.StorageType
 
 /**
  * ##  Prisma Client ʲˢ
@@ -26,8 +62,8 @@ export type PDFTemplate = $Result.DefaultSelection<Prisma.$PDFTemplatePayload>
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more PDFTemplates
- * const pDFTemplates = await prisma.pDFTemplate.findMany()
+ * // Fetch zero or more Attachments
+ * const attachments = await prisma.attachment.findMany()
  * ```
  *
  *
@@ -47,8 +83,8 @@ export class PrismaClient<
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more PDFTemplates
-   * const pDFTemplates = await prisma.pDFTemplate.findMany()
+   * // Fetch zero or more Attachments
+   * const attachments = await prisma.attachment.findMany()
    * ```
    *
    *
@@ -145,6 +181,16 @@ export class PrismaClient<
   }>>
 
       /**
+   * `prisma.attachment`: Exposes CRUD operations for the **Attachment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Attachments
+    * const attachments = await prisma.attachment.findMany()
+    * ```
+    */
+  get attachment(): Prisma.AttachmentDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.pDFTemplate`: Exposes CRUD operations for the **PDFTemplate** model.
     * Example usage:
     * ```ts
@@ -593,6 +639,7 @@ export namespace Prisma {
 
 
   export const ModelName: {
+    Attachment: 'Attachment',
     PDFTemplate: 'PDFTemplate'
   };
 
@@ -612,10 +659,76 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "pDFTemplate"
+      modelProps: "attachment" | "pDFTemplate"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
+      Attachment: {
+        payload: Prisma.$AttachmentPayload<ExtArgs>
+        fields: Prisma.AttachmentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AttachmentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AttachmentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload>
+          }
+          findFirst: {
+            args: Prisma.AttachmentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AttachmentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload>
+          }
+          findMany: {
+            args: Prisma.AttachmentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload>[]
+          }
+          create: {
+            args: Prisma.AttachmentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload>
+          }
+          createMany: {
+            args: Prisma.AttachmentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.AttachmentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload>
+          }
+          update: {
+            args: Prisma.AttachmentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload>
+          }
+          deleteMany: {
+            args: Prisma.AttachmentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AttachmentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.AttachmentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload>
+          }
+          aggregate: {
+            args: Prisma.AttachmentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAttachment>
+          }
+          groupBy: {
+            args: Prisma.AttachmentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AttachmentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AttachmentCountArgs<ExtArgs>
+            result: $Utils.Optional<AttachmentCountAggregateOutputType> | number
+          }
+        }
+      }
       PDFTemplate: {
         payload: Prisma.$PDFTemplatePayload<ExtArgs>
         fields: Prisma.PDFTemplateFieldRefs
@@ -766,6 +879,7 @@ export namespace Prisma {
     omit?: Prisma.GlobalOmitConfig
   }
   export type GlobalOmitConfig = {
+    attachment?: AttachmentOmit
     pDFTemplate?: PDFTemplateOmit
   }
 
@@ -856,10 +970,1058 @@ export namespace Prisma {
    */
 
 
+  /**
+   * Count Type PDFTemplateCountOutputType
+   */
+
+  export type PDFTemplateCountOutputType = {
+    attachments: number
+  }
+
+  export type PDFTemplateCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    attachments?: boolean | PDFTemplateCountOutputTypeCountAttachmentsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * PDFTemplateCountOutputType without action
+   */
+  export type PDFTemplateCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PDFTemplateCountOutputType
+     */
+    select?: PDFTemplateCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PDFTemplateCountOutputType without action
+   */
+  export type PDFTemplateCountOutputTypeCountAttachmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AttachmentWhereInput
+  }
+
 
   /**
    * Models
    */
+
+  /**
+   * Model Attachment
+   */
+
+  export type AggregateAttachment = {
+    _count: AttachmentCountAggregateOutputType | null
+    _avg: AttachmentAvgAggregateOutputType | null
+    _sum: AttachmentSumAggregateOutputType | null
+    _min: AttachmentMinAggregateOutputType | null
+    _max: AttachmentMaxAggregateOutputType | null
+  }
+
+  export type AttachmentAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type AttachmentSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type AttachmentMinAggregateOutputType = {
+    id: number | null
+    templateId: string | null
+    type: $Enums.AttachmentType | null
+    fileName: string | null
+    fileType: string | null
+    storageType: $Enums.StorageType | null
+    fileData: string | null
+    fileUrl: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AttachmentMaxAggregateOutputType = {
+    id: number | null
+    templateId: string | null
+    type: $Enums.AttachmentType | null
+    fileName: string | null
+    fileType: string | null
+    storageType: $Enums.StorageType | null
+    fileData: string | null
+    fileUrl: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AttachmentCountAggregateOutputType = {
+    id: number
+    templateId: number
+    type: number
+    fileName: number
+    fileType: number
+    storageType: number
+    fileData: number
+    fileUrl: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AttachmentAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type AttachmentSumAggregateInputType = {
+    id?: true
+  }
+
+  export type AttachmentMinAggregateInputType = {
+    id?: true
+    templateId?: true
+    type?: true
+    fileName?: true
+    fileType?: true
+    storageType?: true
+    fileData?: true
+    fileUrl?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AttachmentMaxAggregateInputType = {
+    id?: true
+    templateId?: true
+    type?: true
+    fileName?: true
+    fileType?: true
+    storageType?: true
+    fileData?: true
+    fileUrl?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AttachmentCountAggregateInputType = {
+    id?: true
+    templateId?: true
+    type?: true
+    fileName?: true
+    fileType?: true
+    storageType?: true
+    fileData?: true
+    fileUrl?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AttachmentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Attachment to aggregate.
+     */
+    where?: AttachmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Attachments to fetch.
+     */
+    orderBy?: AttachmentOrderByWithRelationInput | AttachmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AttachmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Attachments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Attachments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Attachments
+    **/
+    _count?: true | AttachmentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AttachmentAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AttachmentSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AttachmentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AttachmentMaxAggregateInputType
+  }
+
+  export type GetAttachmentAggregateType<T extends AttachmentAggregateArgs> = {
+        [P in keyof T & keyof AggregateAttachment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAttachment[P]>
+      : GetScalarType<T[P], AggregateAttachment[P]>
+  }
+
+
+
+
+  export type AttachmentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AttachmentWhereInput
+    orderBy?: AttachmentOrderByWithAggregationInput | AttachmentOrderByWithAggregationInput[]
+    by: AttachmentScalarFieldEnum[] | AttachmentScalarFieldEnum
+    having?: AttachmentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AttachmentCountAggregateInputType | true
+    _avg?: AttachmentAvgAggregateInputType
+    _sum?: AttachmentSumAggregateInputType
+    _min?: AttachmentMinAggregateInputType
+    _max?: AttachmentMaxAggregateInputType
+  }
+
+  export type AttachmentGroupByOutputType = {
+    id: number
+    templateId: string
+    type: $Enums.AttachmentType
+    fileName: string
+    fileType: string | null
+    storageType: $Enums.StorageType
+    fileData: string | null
+    fileUrl: string | null
+    createdAt: Date
+    updatedAt: Date | null
+    _count: AttachmentCountAggregateOutputType | null
+    _avg: AttachmentAvgAggregateOutputType | null
+    _sum: AttachmentSumAggregateOutputType | null
+    _min: AttachmentMinAggregateOutputType | null
+    _max: AttachmentMaxAggregateOutputType | null
+  }
+
+  type GetAttachmentGroupByPayload<T extends AttachmentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AttachmentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AttachmentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AttachmentGroupByOutputType[P]>
+            : GetScalarType<T[P], AttachmentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AttachmentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    templateId?: boolean
+    type?: boolean
+    fileName?: boolean
+    fileType?: boolean
+    storageType?: boolean
+    fileData?: boolean
+    fileUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    template?: boolean | PDFTemplateDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["attachment"]>
+
+
+
+  export type AttachmentSelectScalar = {
+    id?: boolean
+    templateId?: boolean
+    type?: boolean
+    fileName?: boolean
+    fileType?: boolean
+    storageType?: boolean
+    fileData?: boolean
+    fileUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AttachmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "templateId" | "type" | "fileName" | "fileType" | "storageType" | "fileData" | "fileUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["attachment"]>
+  export type AttachmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    template?: boolean | PDFTemplateDefaultArgs<ExtArgs>
+  }
+
+  export type $AttachmentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Attachment"
+    objects: {
+      template: Prisma.$PDFTemplatePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      templateId: string
+      type: $Enums.AttachmentType
+      fileName: string
+      fileType: string | null
+      storageType: $Enums.StorageType
+      fileData: string | null
+      fileUrl: string | null
+      createdAt: Date
+      updatedAt: Date | null
+    }, ExtArgs["result"]["attachment"]>
+    composites: {}
+  }
+
+  type AttachmentGetPayload<S extends boolean | null | undefined | AttachmentDefaultArgs> = $Result.GetResult<Prisma.$AttachmentPayload, S>
+
+  type AttachmentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AttachmentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AttachmentCountAggregateInputType | true
+    }
+
+  export interface AttachmentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Attachment'], meta: { name: 'Attachment' } }
+    /**
+     * Find zero or one Attachment that matches the filter.
+     * @param {AttachmentFindUniqueArgs} args - Arguments to find a Attachment
+     * @example
+     * // Get one Attachment
+     * const attachment = await prisma.attachment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AttachmentFindUniqueArgs>(args: SelectSubset<T, AttachmentFindUniqueArgs<ExtArgs>>): Prisma__AttachmentClient<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Attachment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AttachmentFindUniqueOrThrowArgs} args - Arguments to find a Attachment
+     * @example
+     * // Get one Attachment
+     * const attachment = await prisma.attachment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AttachmentFindUniqueOrThrowArgs>(args: SelectSubset<T, AttachmentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AttachmentClient<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Attachment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttachmentFindFirstArgs} args - Arguments to find a Attachment
+     * @example
+     * // Get one Attachment
+     * const attachment = await prisma.attachment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AttachmentFindFirstArgs>(args?: SelectSubset<T, AttachmentFindFirstArgs<ExtArgs>>): Prisma__AttachmentClient<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Attachment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttachmentFindFirstOrThrowArgs} args - Arguments to find a Attachment
+     * @example
+     * // Get one Attachment
+     * const attachment = await prisma.attachment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AttachmentFindFirstOrThrowArgs>(args?: SelectSubset<T, AttachmentFindFirstOrThrowArgs<ExtArgs>>): Prisma__AttachmentClient<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Attachments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttachmentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Attachments
+     * const attachments = await prisma.attachment.findMany()
+     * 
+     * // Get first 10 Attachments
+     * const attachments = await prisma.attachment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const attachmentWithIdOnly = await prisma.attachment.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AttachmentFindManyArgs>(args?: SelectSubset<T, AttachmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Attachment.
+     * @param {AttachmentCreateArgs} args - Arguments to create a Attachment.
+     * @example
+     * // Create one Attachment
+     * const Attachment = await prisma.attachment.create({
+     *   data: {
+     *     // ... data to create a Attachment
+     *   }
+     * })
+     * 
+     */
+    create<T extends AttachmentCreateArgs>(args: SelectSubset<T, AttachmentCreateArgs<ExtArgs>>): Prisma__AttachmentClient<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Attachments.
+     * @param {AttachmentCreateManyArgs} args - Arguments to create many Attachments.
+     * @example
+     * // Create many Attachments
+     * const attachment = await prisma.attachment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AttachmentCreateManyArgs>(args?: SelectSubset<T, AttachmentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Attachment.
+     * @param {AttachmentDeleteArgs} args - Arguments to delete one Attachment.
+     * @example
+     * // Delete one Attachment
+     * const Attachment = await prisma.attachment.delete({
+     *   where: {
+     *     // ... filter to delete one Attachment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AttachmentDeleteArgs>(args: SelectSubset<T, AttachmentDeleteArgs<ExtArgs>>): Prisma__AttachmentClient<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Attachment.
+     * @param {AttachmentUpdateArgs} args - Arguments to update one Attachment.
+     * @example
+     * // Update one Attachment
+     * const attachment = await prisma.attachment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AttachmentUpdateArgs>(args: SelectSubset<T, AttachmentUpdateArgs<ExtArgs>>): Prisma__AttachmentClient<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Attachments.
+     * @param {AttachmentDeleteManyArgs} args - Arguments to filter Attachments to delete.
+     * @example
+     * // Delete a few Attachments
+     * const { count } = await prisma.attachment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AttachmentDeleteManyArgs>(args?: SelectSubset<T, AttachmentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Attachments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttachmentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Attachments
+     * const attachment = await prisma.attachment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AttachmentUpdateManyArgs>(args: SelectSubset<T, AttachmentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Attachment.
+     * @param {AttachmentUpsertArgs} args - Arguments to update or create a Attachment.
+     * @example
+     * // Update or create a Attachment
+     * const attachment = await prisma.attachment.upsert({
+     *   create: {
+     *     // ... data to create a Attachment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Attachment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AttachmentUpsertArgs>(args: SelectSubset<T, AttachmentUpsertArgs<ExtArgs>>): Prisma__AttachmentClient<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Attachments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttachmentCountArgs} args - Arguments to filter Attachments to count.
+     * @example
+     * // Count the number of Attachments
+     * const count = await prisma.attachment.count({
+     *   where: {
+     *     // ... the filter for the Attachments we want to count
+     *   }
+     * })
+    **/
+    count<T extends AttachmentCountArgs>(
+      args?: Subset<T, AttachmentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AttachmentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Attachment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttachmentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AttachmentAggregateArgs>(args: Subset<T, AttachmentAggregateArgs>): Prisma.PrismaPromise<GetAttachmentAggregateType<T>>
+
+    /**
+     * Group by Attachment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttachmentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AttachmentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AttachmentGroupByArgs['orderBy'] }
+        : { orderBy?: AttachmentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AttachmentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAttachmentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Attachment model
+   */
+  readonly fields: AttachmentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Attachment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AttachmentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    template<T extends PDFTemplateDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PDFTemplateDefaultArgs<ExtArgs>>): Prisma__PDFTemplateClient<$Result.GetResult<Prisma.$PDFTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Attachment model
+   */
+  interface AttachmentFieldRefs {
+    readonly id: FieldRef<"Attachment", 'Int'>
+    readonly templateId: FieldRef<"Attachment", 'String'>
+    readonly type: FieldRef<"Attachment", 'AttachmentType'>
+    readonly fileName: FieldRef<"Attachment", 'String'>
+    readonly fileType: FieldRef<"Attachment", 'String'>
+    readonly storageType: FieldRef<"Attachment", 'StorageType'>
+    readonly fileData: FieldRef<"Attachment", 'String'>
+    readonly fileUrl: FieldRef<"Attachment", 'String'>
+    readonly createdAt: FieldRef<"Attachment", 'DateTime'>
+    readonly updatedAt: FieldRef<"Attachment", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Attachment findUnique
+   */
+  export type AttachmentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attachment
+     */
+    select?: AttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attachment
+     */
+    omit?: AttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttachmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Attachment to fetch.
+     */
+    where: AttachmentWhereUniqueInput
+  }
+
+  /**
+   * Attachment findUniqueOrThrow
+   */
+  export type AttachmentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attachment
+     */
+    select?: AttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attachment
+     */
+    omit?: AttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttachmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Attachment to fetch.
+     */
+    where: AttachmentWhereUniqueInput
+  }
+
+  /**
+   * Attachment findFirst
+   */
+  export type AttachmentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attachment
+     */
+    select?: AttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attachment
+     */
+    omit?: AttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttachmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Attachment to fetch.
+     */
+    where?: AttachmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Attachments to fetch.
+     */
+    orderBy?: AttachmentOrderByWithRelationInput | AttachmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Attachments.
+     */
+    cursor?: AttachmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Attachments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Attachments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Attachments.
+     */
+    distinct?: AttachmentScalarFieldEnum | AttachmentScalarFieldEnum[]
+  }
+
+  /**
+   * Attachment findFirstOrThrow
+   */
+  export type AttachmentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attachment
+     */
+    select?: AttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attachment
+     */
+    omit?: AttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttachmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Attachment to fetch.
+     */
+    where?: AttachmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Attachments to fetch.
+     */
+    orderBy?: AttachmentOrderByWithRelationInput | AttachmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Attachments.
+     */
+    cursor?: AttachmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Attachments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Attachments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Attachments.
+     */
+    distinct?: AttachmentScalarFieldEnum | AttachmentScalarFieldEnum[]
+  }
+
+  /**
+   * Attachment findMany
+   */
+  export type AttachmentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attachment
+     */
+    select?: AttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attachment
+     */
+    omit?: AttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttachmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Attachments to fetch.
+     */
+    where?: AttachmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Attachments to fetch.
+     */
+    orderBy?: AttachmentOrderByWithRelationInput | AttachmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Attachments.
+     */
+    cursor?: AttachmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Attachments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Attachments.
+     */
+    skip?: number
+    distinct?: AttachmentScalarFieldEnum | AttachmentScalarFieldEnum[]
+  }
+
+  /**
+   * Attachment create
+   */
+  export type AttachmentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attachment
+     */
+    select?: AttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attachment
+     */
+    omit?: AttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttachmentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Attachment.
+     */
+    data: XOR<AttachmentCreateInput, AttachmentUncheckedCreateInput>
+  }
+
+  /**
+   * Attachment createMany
+   */
+  export type AttachmentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Attachments.
+     */
+    data: AttachmentCreateManyInput | AttachmentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Attachment update
+   */
+  export type AttachmentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attachment
+     */
+    select?: AttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attachment
+     */
+    omit?: AttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttachmentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Attachment.
+     */
+    data: XOR<AttachmentUpdateInput, AttachmentUncheckedUpdateInput>
+    /**
+     * Choose, which Attachment to update.
+     */
+    where: AttachmentWhereUniqueInput
+  }
+
+  /**
+   * Attachment updateMany
+   */
+  export type AttachmentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Attachments.
+     */
+    data: XOR<AttachmentUpdateManyMutationInput, AttachmentUncheckedUpdateManyInput>
+    /**
+     * Filter which Attachments to update
+     */
+    where?: AttachmentWhereInput
+    /**
+     * Limit how many Attachments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Attachment upsert
+   */
+  export type AttachmentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attachment
+     */
+    select?: AttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attachment
+     */
+    omit?: AttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttachmentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Attachment to update in case it exists.
+     */
+    where: AttachmentWhereUniqueInput
+    /**
+     * In case the Attachment found by the `where` argument doesn't exist, create a new Attachment with this data.
+     */
+    create: XOR<AttachmentCreateInput, AttachmentUncheckedCreateInput>
+    /**
+     * In case the Attachment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AttachmentUpdateInput, AttachmentUncheckedUpdateInput>
+  }
+
+  /**
+   * Attachment delete
+   */
+  export type AttachmentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attachment
+     */
+    select?: AttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attachment
+     */
+    omit?: AttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttachmentInclude<ExtArgs> | null
+    /**
+     * Filter which Attachment to delete.
+     */
+    where: AttachmentWhereUniqueInput
+  }
+
+  /**
+   * Attachment deleteMany
+   */
+  export type AttachmentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Attachments to delete
+     */
+    where?: AttachmentWhereInput
+    /**
+     * Limit how many Attachments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Attachment without action
+   */
+  export type AttachmentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attachment
+     */
+    select?: AttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attachment
+     */
+    omit?: AttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttachmentInclude<ExtArgs> | null
+  }
+
 
   /**
    * Model PDFTemplate
@@ -885,6 +2047,7 @@ export namespace Prisma {
     id: number | null
     templateName: string | null
     templateId: string | null
+    content: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -893,6 +2056,7 @@ export namespace Prisma {
     id: number | null
     templateName: string | null
     templateId: string | null
+    content: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -901,6 +2065,7 @@ export namespace Prisma {
     id: number
     templateName: number
     templateId: number
+    content: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -919,6 +2084,7 @@ export namespace Prisma {
     id?: true
     templateName?: true
     templateId?: true
+    content?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -927,6 +2093,7 @@ export namespace Prisma {
     id?: true
     templateName?: true
     templateId?: true
+    content?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -935,6 +2102,7 @@ export namespace Prisma {
     id?: true
     templateName?: true
     templateId?: true
+    content?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -1030,6 +2198,7 @@ export namespace Prisma {
     id: number
     templateName: string
     templateId: string
+    content: string
     createdAt: Date
     updatedAt: Date
     _count: PDFTemplateCountAggregateOutputType | null
@@ -1057,8 +2226,11 @@ export namespace Prisma {
     id?: boolean
     templateName?: boolean
     templateId?: boolean
+    content?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    attachments?: boolean | PDFTemplate$attachmentsArgs<ExtArgs>
+    _count?: boolean | PDFTemplateCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["pDFTemplate"]>
 
 
@@ -1067,19 +2239,27 @@ export namespace Prisma {
     id?: boolean
     templateName?: boolean
     templateId?: boolean
+    content?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PDFTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "templateName" | "templateId" | "createdAt" | "updatedAt", ExtArgs["result"]["pDFTemplate"]>
+  export type PDFTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "templateName" | "templateId" | "content" | "createdAt" | "updatedAt", ExtArgs["result"]["pDFTemplate"]>
+  export type PDFTemplateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    attachments?: boolean | PDFTemplate$attachmentsArgs<ExtArgs>
+    _count?: boolean | PDFTemplateCountOutputTypeDefaultArgs<ExtArgs>
+  }
 
   export type $PDFTemplatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "PDFTemplate"
-    objects: {}
+    objects: {
+      attachments: Prisma.$AttachmentPayload<ExtArgs>[]
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       templateName: string
       templateId: string
+      content: string
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["pDFTemplate"]>
@@ -1422,6 +2602,7 @@ export namespace Prisma {
    */
   export interface Prisma__PDFTemplateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    attachments<T extends PDFTemplate$attachmentsArgs<ExtArgs> = {}>(args?: Subset<T, PDFTemplate$attachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1454,6 +2635,7 @@ export namespace Prisma {
     readonly id: FieldRef<"PDFTemplate", 'Int'>
     readonly templateName: FieldRef<"PDFTemplate", 'String'>
     readonly templateId: FieldRef<"PDFTemplate", 'String'>
+    readonly content: FieldRef<"PDFTemplate", 'String'>
     readonly createdAt: FieldRef<"PDFTemplate", 'DateTime'>
     readonly updatedAt: FieldRef<"PDFTemplate", 'DateTime'>
   }
@@ -1473,6 +2655,10 @@ export namespace Prisma {
      */
     omit?: PDFTemplateOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PDFTemplateInclude<ExtArgs> | null
+    /**
      * Filter, which PDFTemplate to fetch.
      */
     where: PDFTemplateWhereUniqueInput
@@ -1491,6 +2677,10 @@ export namespace Prisma {
      */
     omit?: PDFTemplateOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PDFTemplateInclude<ExtArgs> | null
+    /**
      * Filter, which PDFTemplate to fetch.
      */
     where: PDFTemplateWhereUniqueInput
@@ -1508,6 +2698,10 @@ export namespace Prisma {
      * Omit specific fields from the PDFTemplate
      */
     omit?: PDFTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PDFTemplateInclude<ExtArgs> | null
     /**
      * Filter, which PDFTemplate to fetch.
      */
@@ -1557,6 +2751,10 @@ export namespace Prisma {
      */
     omit?: PDFTemplateOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PDFTemplateInclude<ExtArgs> | null
+    /**
      * Filter, which PDFTemplate to fetch.
      */
     where?: PDFTemplateWhereInput
@@ -1605,6 +2803,10 @@ export namespace Prisma {
      */
     omit?: PDFTemplateOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PDFTemplateInclude<ExtArgs> | null
+    /**
      * Filter, which PDFTemplates to fetch.
      */
     where?: PDFTemplateWhereInput
@@ -1648,6 +2850,10 @@ export namespace Prisma {
      */
     omit?: PDFTemplateOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PDFTemplateInclude<ExtArgs> | null
+    /**
      * The data needed to create a PDFTemplate.
      */
     data: XOR<PDFTemplateCreateInput, PDFTemplateUncheckedCreateInput>
@@ -1676,6 +2882,10 @@ export namespace Prisma {
      * Omit specific fields from the PDFTemplate
      */
     omit?: PDFTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PDFTemplateInclude<ExtArgs> | null
     /**
      * The data needed to update a PDFTemplate.
      */
@@ -1717,6 +2927,10 @@ export namespace Prisma {
      */
     omit?: PDFTemplateOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PDFTemplateInclude<ExtArgs> | null
+    /**
      * The filter to search for the PDFTemplate to update in case it exists.
      */
     where: PDFTemplateWhereUniqueInput
@@ -1743,6 +2957,10 @@ export namespace Prisma {
      */
     omit?: PDFTemplateOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PDFTemplateInclude<ExtArgs> | null
+    /**
      * Filter which PDFTemplate to delete.
      */
     where: PDFTemplateWhereUniqueInput
@@ -1763,6 +2981,30 @@ export namespace Prisma {
   }
 
   /**
+   * PDFTemplate.attachments
+   */
+  export type PDFTemplate$attachmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attachment
+     */
+    select?: AttachmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attachment
+     */
+    omit?: AttachmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttachmentInclude<ExtArgs> | null
+    where?: AttachmentWhereInput
+    orderBy?: AttachmentOrderByWithRelationInput | AttachmentOrderByWithRelationInput[]
+    cursor?: AttachmentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AttachmentScalarFieldEnum | AttachmentScalarFieldEnum[]
+  }
+
+  /**
    * PDFTemplate without action
    */
   export type PDFTemplateDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1774,6 +3016,10 @@ export namespace Prisma {
      * Omit specific fields from the PDFTemplate
      */
     omit?: PDFTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PDFTemplateInclude<ExtArgs> | null
   }
 
 
@@ -1791,10 +3037,27 @@ export namespace Prisma {
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+  export const AttachmentScalarFieldEnum: {
+    id: 'id',
+    templateId: 'templateId',
+    type: 'type',
+    fileName: 'fileName',
+    fileType: 'fileType',
+    storageType: 'storageType',
+    fileData: 'fileData',
+    fileUrl: 'fileUrl',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AttachmentScalarFieldEnum = (typeof AttachmentScalarFieldEnum)[keyof typeof AttachmentScalarFieldEnum]
+
+
   export const PDFTemplateScalarFieldEnum: {
     id: 'id',
     templateName: 'templateName',
     templateId: 'templateId',
+    content: 'content',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -1810,9 +3073,29 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+  export const NullsOrder: {
+    first: 'first',
+    last: 'last'
+  };
+
+  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+  export const AttachmentOrderByRelevanceFieldEnum: {
+    templateId: 'templateId',
+    fileName: 'fileName',
+    fileType: 'fileType',
+    fileData: 'fileData',
+    fileUrl: 'fileUrl'
+  };
+
+  export type AttachmentOrderByRelevanceFieldEnum = (typeof AttachmentOrderByRelevanceFieldEnum)[keyof typeof AttachmentOrderByRelevanceFieldEnum]
+
+
   export const PDFTemplateOrderByRelevanceFieldEnum: {
     templateName: 'templateName',
-    templateId: 'templateId'
+    templateId: 'templateId',
+    content: 'content'
   };
 
   export type PDFTemplateOrderByRelevanceFieldEnum = (typeof PDFTemplateOrderByRelevanceFieldEnum)[keyof typeof PDFTemplateOrderByRelevanceFieldEnum]
@@ -1838,6 +3121,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'AttachmentType'
+   */
+  export type EnumAttachmentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AttachmentType'>
+    
+
+
+  /**
+   * Reference to a field of type 'StorageType'
+   */
+  export type EnumStorageTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StorageType'>
+    
+
+
+  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -1854,6 +3151,89 @@ export namespace Prisma {
    */
 
 
+  export type AttachmentWhereInput = {
+    AND?: AttachmentWhereInput | AttachmentWhereInput[]
+    OR?: AttachmentWhereInput[]
+    NOT?: AttachmentWhereInput | AttachmentWhereInput[]
+    id?: IntFilter<"Attachment"> | number
+    templateId?: StringFilter<"Attachment"> | string
+    type?: EnumAttachmentTypeFilter<"Attachment"> | $Enums.AttachmentType
+    fileName?: StringFilter<"Attachment"> | string
+    fileType?: StringNullableFilter<"Attachment"> | string | null
+    storageType?: EnumStorageTypeFilter<"Attachment"> | $Enums.StorageType
+    fileData?: StringNullableFilter<"Attachment"> | string | null
+    fileUrl?: StringNullableFilter<"Attachment"> | string | null
+    createdAt?: DateTimeFilter<"Attachment"> | Date | string
+    updatedAt?: DateTimeNullableFilter<"Attachment"> | Date | string | null
+    template?: XOR<PDFTemplateScalarRelationFilter, PDFTemplateWhereInput>
+  }
+
+  export type AttachmentOrderByWithRelationInput = {
+    id?: SortOrder
+    templateId?: SortOrder
+    type?: SortOrder
+    fileName?: SortOrder
+    fileType?: SortOrderInput | SortOrder
+    storageType?: SortOrder
+    fileData?: SortOrderInput | SortOrder
+    fileUrl?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrderInput | SortOrder
+    template?: PDFTemplateOrderByWithRelationInput
+    _relevance?: AttachmentOrderByRelevanceInput
+  }
+
+  export type AttachmentWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: AttachmentWhereInput | AttachmentWhereInput[]
+    OR?: AttachmentWhereInput[]
+    NOT?: AttachmentWhereInput | AttachmentWhereInput[]
+    templateId?: StringFilter<"Attachment"> | string
+    type?: EnumAttachmentTypeFilter<"Attachment"> | $Enums.AttachmentType
+    fileName?: StringFilter<"Attachment"> | string
+    fileType?: StringNullableFilter<"Attachment"> | string | null
+    storageType?: EnumStorageTypeFilter<"Attachment"> | $Enums.StorageType
+    fileData?: StringNullableFilter<"Attachment"> | string | null
+    fileUrl?: StringNullableFilter<"Attachment"> | string | null
+    createdAt?: DateTimeFilter<"Attachment"> | Date | string
+    updatedAt?: DateTimeNullableFilter<"Attachment"> | Date | string | null
+    template?: XOR<PDFTemplateScalarRelationFilter, PDFTemplateWhereInput>
+  }, "id">
+
+  export type AttachmentOrderByWithAggregationInput = {
+    id?: SortOrder
+    templateId?: SortOrder
+    type?: SortOrder
+    fileName?: SortOrder
+    fileType?: SortOrderInput | SortOrder
+    storageType?: SortOrder
+    fileData?: SortOrderInput | SortOrder
+    fileUrl?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrderInput | SortOrder
+    _count?: AttachmentCountOrderByAggregateInput
+    _avg?: AttachmentAvgOrderByAggregateInput
+    _max?: AttachmentMaxOrderByAggregateInput
+    _min?: AttachmentMinOrderByAggregateInput
+    _sum?: AttachmentSumOrderByAggregateInput
+  }
+
+  export type AttachmentScalarWhereWithAggregatesInput = {
+    AND?: AttachmentScalarWhereWithAggregatesInput | AttachmentScalarWhereWithAggregatesInput[]
+    OR?: AttachmentScalarWhereWithAggregatesInput[]
+    NOT?: AttachmentScalarWhereWithAggregatesInput | AttachmentScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Attachment"> | number
+    templateId?: StringWithAggregatesFilter<"Attachment"> | string
+    type?: EnumAttachmentTypeWithAggregatesFilter<"Attachment"> | $Enums.AttachmentType
+    fileName?: StringWithAggregatesFilter<"Attachment"> | string
+    fileType?: StringNullableWithAggregatesFilter<"Attachment"> | string | null
+    storageType?: EnumStorageTypeWithAggregatesFilter<"Attachment"> | $Enums.StorageType
+    fileData?: StringNullableWithAggregatesFilter<"Attachment"> | string | null
+    fileUrl?: StringNullableWithAggregatesFilter<"Attachment"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Attachment"> | Date | string
+    updatedAt?: DateTimeNullableWithAggregatesFilter<"Attachment"> | Date | string | null
+  }
+
   export type PDFTemplateWhereInput = {
     AND?: PDFTemplateWhereInput | PDFTemplateWhereInput[]
     OR?: PDFTemplateWhereInput[]
@@ -1861,16 +3241,20 @@ export namespace Prisma {
     id?: IntFilter<"PDFTemplate"> | number
     templateName?: StringFilter<"PDFTemplate"> | string
     templateId?: StringFilter<"PDFTemplate"> | string
+    content?: StringFilter<"PDFTemplate"> | string
     createdAt?: DateTimeFilter<"PDFTemplate"> | Date | string
     updatedAt?: DateTimeFilter<"PDFTemplate"> | Date | string
+    attachments?: AttachmentListRelationFilter
   }
 
   export type PDFTemplateOrderByWithRelationInput = {
     id?: SortOrder
     templateName?: SortOrder
     templateId?: SortOrder
+    content?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    attachments?: AttachmentOrderByRelationAggregateInput
     _relevance?: PDFTemplateOrderByRelevanceInput
   }
 
@@ -1881,14 +3265,17 @@ export namespace Prisma {
     OR?: PDFTemplateWhereInput[]
     NOT?: PDFTemplateWhereInput | PDFTemplateWhereInput[]
     templateName?: StringFilter<"PDFTemplate"> | string
+    content?: StringFilter<"PDFTemplate"> | string
     createdAt?: DateTimeFilter<"PDFTemplate"> | Date | string
     updatedAt?: DateTimeFilter<"PDFTemplate"> | Date | string
+    attachments?: AttachmentListRelationFilter
   }, "id" | "templateId">
 
   export type PDFTemplateOrderByWithAggregationInput = {
     id?: SortOrder
     templateName?: SortOrder
     templateId?: SortOrder
+    content?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: PDFTemplateCountOrderByAggregateInput
@@ -1905,44 +3292,141 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"PDFTemplate"> | number
     templateName?: StringWithAggregatesFilter<"PDFTemplate"> | string
     templateId?: StringWithAggregatesFilter<"PDFTemplate"> | string
+    content?: StringWithAggregatesFilter<"PDFTemplate"> | string
     createdAt?: DateTimeWithAggregatesFilter<"PDFTemplate"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"PDFTemplate"> | Date | string
+  }
+
+  export type AttachmentCreateInput = {
+    type: $Enums.AttachmentType
+    fileName: string
+    fileType?: string | null
+    storageType?: $Enums.StorageType
+    fileData?: string | null
+    fileUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+    template: PDFTemplateCreateNestedOneWithoutAttachmentsInput
+  }
+
+  export type AttachmentUncheckedCreateInput = {
+    id?: number
+    templateId: string
+    type: $Enums.AttachmentType
+    fileName: string
+    fileType?: string | null
+    storageType?: $Enums.StorageType
+    fileData?: string | null
+    fileUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+  }
+
+  export type AttachmentUpdateInput = {
+    type?: EnumAttachmentTypeFieldUpdateOperationsInput | $Enums.AttachmentType
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileType?: NullableStringFieldUpdateOperationsInput | string | null
+    storageType?: EnumStorageTypeFieldUpdateOperationsInput | $Enums.StorageType
+    fileData?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    template?: PDFTemplateUpdateOneRequiredWithoutAttachmentsNestedInput
+  }
+
+  export type AttachmentUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    templateId?: StringFieldUpdateOperationsInput | string
+    type?: EnumAttachmentTypeFieldUpdateOperationsInput | $Enums.AttachmentType
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileType?: NullableStringFieldUpdateOperationsInput | string | null
+    storageType?: EnumStorageTypeFieldUpdateOperationsInput | $Enums.StorageType
+    fileData?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type AttachmentCreateManyInput = {
+    id?: number
+    templateId: string
+    type: $Enums.AttachmentType
+    fileName: string
+    fileType?: string | null
+    storageType?: $Enums.StorageType
+    fileData?: string | null
+    fileUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+  }
+
+  export type AttachmentUpdateManyMutationInput = {
+    type?: EnumAttachmentTypeFieldUpdateOperationsInput | $Enums.AttachmentType
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileType?: NullableStringFieldUpdateOperationsInput | string | null
+    storageType?: EnumStorageTypeFieldUpdateOperationsInput | $Enums.StorageType
+    fileData?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type AttachmentUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    templateId?: StringFieldUpdateOperationsInput | string
+    type?: EnumAttachmentTypeFieldUpdateOperationsInput | $Enums.AttachmentType
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileType?: NullableStringFieldUpdateOperationsInput | string | null
+    storageType?: EnumStorageTypeFieldUpdateOperationsInput | $Enums.StorageType
+    fileData?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PDFTemplateCreateInput = {
     templateName: string
     templateId: string
+    content: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    attachments?: AttachmentCreateNestedManyWithoutTemplateInput
   }
 
   export type PDFTemplateUncheckedCreateInput = {
     id?: number
     templateName: string
     templateId: string
+    content: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    attachments?: AttachmentUncheckedCreateNestedManyWithoutTemplateInput
   }
 
   export type PDFTemplateUpdateInput = {
     templateName?: StringFieldUpdateOperationsInput | string
     templateId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attachments?: AttachmentUpdateManyWithoutTemplateNestedInput
   }
 
   export type PDFTemplateUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     templateName?: StringFieldUpdateOperationsInput | string
     templateId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attachments?: AttachmentUncheckedUpdateManyWithoutTemplateNestedInput
   }
 
   export type PDFTemplateCreateManyInput = {
     id?: number
     templateName: string
     templateId: string
+    content: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -1950,6 +3434,7 @@ export namespace Prisma {
   export type PDFTemplateUpdateManyMutationInput = {
     templateName?: StringFieldUpdateOperationsInput | string
     templateId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -1958,6 +3443,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     templateName?: StringFieldUpdateOperationsInput | string
     templateId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -1988,6 +3474,35 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type EnumAttachmentTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.AttachmentType | EnumAttachmentTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AttachmentType[]
+    notIn?: $Enums.AttachmentType[]
+    not?: NestedEnumAttachmentTypeFilter<$PrismaModel> | $Enums.AttachmentType
+  }
+
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type EnumStorageTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.StorageType | EnumStorageTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.StorageType[]
+    notIn?: $Enums.StorageType[]
+    not?: NestedEnumStorageTypeFilter<$PrismaModel> | $Enums.StorageType
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -1999,41 +3514,77 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type PDFTemplateOrderByRelevanceInput = {
-    fields: PDFTemplateOrderByRelevanceFieldEnum | PDFTemplateOrderByRelevanceFieldEnum[]
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type PDFTemplateScalarRelationFilter = {
+    is?: PDFTemplateWhereInput
+    isNot?: PDFTemplateWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
+  export type AttachmentOrderByRelevanceInput = {
+    fields: AttachmentOrderByRelevanceFieldEnum | AttachmentOrderByRelevanceFieldEnum[]
     sort: SortOrder
     search: string
   }
 
-  export type PDFTemplateCountOrderByAggregateInput = {
+  export type AttachmentCountOrderByAggregateInput = {
     id?: SortOrder
-    templateName?: SortOrder
     templateId?: SortOrder
+    type?: SortOrder
+    fileName?: SortOrder
+    fileType?: SortOrder
+    storageType?: SortOrder
+    fileData?: SortOrder
+    fileUrl?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type PDFTemplateAvgOrderByAggregateInput = {
+  export type AttachmentAvgOrderByAggregateInput = {
     id?: SortOrder
   }
 
-  export type PDFTemplateMaxOrderByAggregateInput = {
+  export type AttachmentMaxOrderByAggregateInput = {
     id?: SortOrder
-    templateName?: SortOrder
     templateId?: SortOrder
+    type?: SortOrder
+    fileName?: SortOrder
+    fileType?: SortOrder
+    storageType?: SortOrder
+    fileData?: SortOrder
+    fileUrl?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type PDFTemplateMinOrderByAggregateInput = {
+  export type AttachmentMinOrderByAggregateInput = {
     id?: SortOrder
-    templateName?: SortOrder
     templateId?: SortOrder
+    type?: SortOrder
+    fileName?: SortOrder
+    fileType?: SortOrder
+    storageType?: SortOrder
+    fileData?: SortOrder
+    fileUrl?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type PDFTemplateSumOrderByAggregateInput = {
+  export type AttachmentSumOrderByAggregateInput = {
     id?: SortOrder
   }
 
@@ -2071,6 +3622,44 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
+  export type EnumAttachmentTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AttachmentType | EnumAttachmentTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AttachmentType[]
+    notIn?: $Enums.AttachmentType[]
+    not?: NestedEnumAttachmentTypeWithAggregatesFilter<$PrismaModel> | $Enums.AttachmentType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAttachmentTypeFilter<$PrismaModel>
+    _max?: NestedEnumAttachmentTypeFilter<$PrismaModel>
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type EnumStorageTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.StorageType | EnumStorageTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.StorageType[]
+    notIn?: $Enums.StorageType[]
+    not?: NestedEnumStorageTypeWithAggregatesFilter<$PrismaModel> | $Enums.StorageType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumStorageTypeFilter<$PrismaModel>
+    _max?: NestedEnumStorageTypeFilter<$PrismaModel>
+  }
+
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -2085,12 +3674,107 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type AttachmentListRelationFilter = {
+    every?: AttachmentWhereInput
+    some?: AttachmentWhereInput
+    none?: AttachmentWhereInput
+  }
+
+  export type AttachmentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PDFTemplateOrderByRelevanceInput = {
+    fields: PDFTemplateOrderByRelevanceFieldEnum | PDFTemplateOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type PDFTemplateCountOrderByAggregateInput = {
+    id?: SortOrder
+    templateName?: SortOrder
+    templateId?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PDFTemplateAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type PDFTemplateMaxOrderByAggregateInput = {
+    id?: SortOrder
+    templateName?: SortOrder
+    templateId?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PDFTemplateMinOrderByAggregateInput = {
+    id?: SortOrder
+    templateName?: SortOrder
+    templateId?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PDFTemplateSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type PDFTemplateCreateNestedOneWithoutAttachmentsInput = {
+    create?: XOR<PDFTemplateCreateWithoutAttachmentsInput, PDFTemplateUncheckedCreateWithoutAttachmentsInput>
+    connectOrCreate?: PDFTemplateCreateOrConnectWithoutAttachmentsInput
+    connect?: PDFTemplateWhereUniqueInput
+  }
+
+  export type EnumAttachmentTypeFieldUpdateOperationsInput = {
+    set?: $Enums.AttachmentType
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
 
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
+  export type EnumStorageTypeFieldUpdateOperationsInput = {
+    set?: $Enums.StorageType
+  }
+
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type PDFTemplateUpdateOneRequiredWithoutAttachmentsNestedInput = {
+    create?: XOR<PDFTemplateCreateWithoutAttachmentsInput, PDFTemplateUncheckedCreateWithoutAttachmentsInput>
+    connectOrCreate?: PDFTemplateCreateOrConnectWithoutAttachmentsInput
+    upsert?: PDFTemplateUpsertWithoutAttachmentsInput
+    connect?: PDFTemplateWhereUniqueInput
+    update?: XOR<XOR<PDFTemplateUpdateToOneWithWhereWithoutAttachmentsInput, PDFTemplateUpdateWithoutAttachmentsInput>, PDFTemplateUncheckedUpdateWithoutAttachmentsInput>
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -2099,6 +3783,48 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type AttachmentCreateNestedManyWithoutTemplateInput = {
+    create?: XOR<AttachmentCreateWithoutTemplateInput, AttachmentUncheckedCreateWithoutTemplateInput> | AttachmentCreateWithoutTemplateInput[] | AttachmentUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: AttachmentCreateOrConnectWithoutTemplateInput | AttachmentCreateOrConnectWithoutTemplateInput[]
+    createMany?: AttachmentCreateManyTemplateInputEnvelope
+    connect?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
+  }
+
+  export type AttachmentUncheckedCreateNestedManyWithoutTemplateInput = {
+    create?: XOR<AttachmentCreateWithoutTemplateInput, AttachmentUncheckedCreateWithoutTemplateInput> | AttachmentCreateWithoutTemplateInput[] | AttachmentUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: AttachmentCreateOrConnectWithoutTemplateInput | AttachmentCreateOrConnectWithoutTemplateInput[]
+    createMany?: AttachmentCreateManyTemplateInputEnvelope
+    connect?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
+  }
+
+  export type AttachmentUpdateManyWithoutTemplateNestedInput = {
+    create?: XOR<AttachmentCreateWithoutTemplateInput, AttachmentUncheckedCreateWithoutTemplateInput> | AttachmentCreateWithoutTemplateInput[] | AttachmentUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: AttachmentCreateOrConnectWithoutTemplateInput | AttachmentCreateOrConnectWithoutTemplateInput[]
+    upsert?: AttachmentUpsertWithWhereUniqueWithoutTemplateInput | AttachmentUpsertWithWhereUniqueWithoutTemplateInput[]
+    createMany?: AttachmentCreateManyTemplateInputEnvelope
+    set?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
+    disconnect?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
+    delete?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
+    connect?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
+    update?: AttachmentUpdateWithWhereUniqueWithoutTemplateInput | AttachmentUpdateWithWhereUniqueWithoutTemplateInput[]
+    updateMany?: AttachmentUpdateManyWithWhereWithoutTemplateInput | AttachmentUpdateManyWithWhereWithoutTemplateInput[]
+    deleteMany?: AttachmentScalarWhereInput | AttachmentScalarWhereInput[]
+  }
+
+  export type AttachmentUncheckedUpdateManyWithoutTemplateNestedInput = {
+    create?: XOR<AttachmentCreateWithoutTemplateInput, AttachmentUncheckedCreateWithoutTemplateInput> | AttachmentCreateWithoutTemplateInput[] | AttachmentUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: AttachmentCreateOrConnectWithoutTemplateInput | AttachmentCreateOrConnectWithoutTemplateInput[]
+    upsert?: AttachmentUpsertWithWhereUniqueWithoutTemplateInput | AttachmentUpsertWithWhereUniqueWithoutTemplateInput[]
+    createMany?: AttachmentCreateManyTemplateInputEnvelope
+    set?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
+    disconnect?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
+    delete?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
+    connect?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
+    update?: AttachmentUpdateWithWhereUniqueWithoutTemplateInput | AttachmentUpdateWithWhereUniqueWithoutTemplateInput[]
+    updateMany?: AttachmentUpdateManyWithWhereWithoutTemplateInput | AttachmentUpdateManyWithWhereWithoutTemplateInput[]
+    deleteMany?: AttachmentScalarWhereInput | AttachmentScalarWhereInput[]
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -2127,6 +3853,35 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type NestedEnumAttachmentTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.AttachmentType | EnumAttachmentTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AttachmentType[]
+    notIn?: $Enums.AttachmentType[]
+    not?: NestedEnumAttachmentTypeFilter<$PrismaModel> | $Enums.AttachmentType
+  }
+
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedEnumStorageTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.StorageType | EnumStorageTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.StorageType[]
+    notIn?: $Enums.StorageType[]
+    not?: NestedEnumStorageTypeFilter<$PrismaModel> | $Enums.StorageType
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -2136,6 +3891,17 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -2183,6 +3949,55 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
+  export type NestedEnumAttachmentTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AttachmentType | EnumAttachmentTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AttachmentType[]
+    notIn?: $Enums.AttachmentType[]
+    not?: NestedEnumAttachmentTypeWithAggregatesFilter<$PrismaModel> | $Enums.AttachmentType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAttachmentTypeFilter<$PrismaModel>
+    _max?: NestedEnumAttachmentTypeFilter<$PrismaModel>
+  }
+
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedEnumStorageTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.StorageType | EnumStorageTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.StorageType[]
+    notIn?: $Enums.StorageType[]
+    not?: NestedEnumStorageTypeWithAggregatesFilter<$PrismaModel> | $Enums.StorageType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumStorageTypeFilter<$PrismaModel>
+    _max?: NestedEnumStorageTypeFilter<$PrismaModel>
+  }
+
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -2195,6 +4010,182 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type PDFTemplateCreateWithoutAttachmentsInput = {
+    templateName: string
+    templateId: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PDFTemplateUncheckedCreateWithoutAttachmentsInput = {
+    id?: number
+    templateName: string
+    templateId: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PDFTemplateCreateOrConnectWithoutAttachmentsInput = {
+    where: PDFTemplateWhereUniqueInput
+    create: XOR<PDFTemplateCreateWithoutAttachmentsInput, PDFTemplateUncheckedCreateWithoutAttachmentsInput>
+  }
+
+  export type PDFTemplateUpsertWithoutAttachmentsInput = {
+    update: XOR<PDFTemplateUpdateWithoutAttachmentsInput, PDFTemplateUncheckedUpdateWithoutAttachmentsInput>
+    create: XOR<PDFTemplateCreateWithoutAttachmentsInput, PDFTemplateUncheckedCreateWithoutAttachmentsInput>
+    where?: PDFTemplateWhereInput
+  }
+
+  export type PDFTemplateUpdateToOneWithWhereWithoutAttachmentsInput = {
+    where?: PDFTemplateWhereInput
+    data: XOR<PDFTemplateUpdateWithoutAttachmentsInput, PDFTemplateUncheckedUpdateWithoutAttachmentsInput>
+  }
+
+  export type PDFTemplateUpdateWithoutAttachmentsInput = {
+    templateName?: StringFieldUpdateOperationsInput | string
+    templateId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PDFTemplateUncheckedUpdateWithoutAttachmentsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    templateName?: StringFieldUpdateOperationsInput | string
+    templateId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AttachmentCreateWithoutTemplateInput = {
+    type: $Enums.AttachmentType
+    fileName: string
+    fileType?: string | null
+    storageType?: $Enums.StorageType
+    fileData?: string | null
+    fileUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+  }
+
+  export type AttachmentUncheckedCreateWithoutTemplateInput = {
+    id?: number
+    type: $Enums.AttachmentType
+    fileName: string
+    fileType?: string | null
+    storageType?: $Enums.StorageType
+    fileData?: string | null
+    fileUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+  }
+
+  export type AttachmentCreateOrConnectWithoutTemplateInput = {
+    where: AttachmentWhereUniqueInput
+    create: XOR<AttachmentCreateWithoutTemplateInput, AttachmentUncheckedCreateWithoutTemplateInput>
+  }
+
+  export type AttachmentCreateManyTemplateInputEnvelope = {
+    data: AttachmentCreateManyTemplateInput | AttachmentCreateManyTemplateInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AttachmentUpsertWithWhereUniqueWithoutTemplateInput = {
+    where: AttachmentWhereUniqueInput
+    update: XOR<AttachmentUpdateWithoutTemplateInput, AttachmentUncheckedUpdateWithoutTemplateInput>
+    create: XOR<AttachmentCreateWithoutTemplateInput, AttachmentUncheckedCreateWithoutTemplateInput>
+  }
+
+  export type AttachmentUpdateWithWhereUniqueWithoutTemplateInput = {
+    where: AttachmentWhereUniqueInput
+    data: XOR<AttachmentUpdateWithoutTemplateInput, AttachmentUncheckedUpdateWithoutTemplateInput>
+  }
+
+  export type AttachmentUpdateManyWithWhereWithoutTemplateInput = {
+    where: AttachmentScalarWhereInput
+    data: XOR<AttachmentUpdateManyMutationInput, AttachmentUncheckedUpdateManyWithoutTemplateInput>
+  }
+
+  export type AttachmentScalarWhereInput = {
+    AND?: AttachmentScalarWhereInput | AttachmentScalarWhereInput[]
+    OR?: AttachmentScalarWhereInput[]
+    NOT?: AttachmentScalarWhereInput | AttachmentScalarWhereInput[]
+    id?: IntFilter<"Attachment"> | number
+    templateId?: StringFilter<"Attachment"> | string
+    type?: EnumAttachmentTypeFilter<"Attachment"> | $Enums.AttachmentType
+    fileName?: StringFilter<"Attachment"> | string
+    fileType?: StringNullableFilter<"Attachment"> | string | null
+    storageType?: EnumStorageTypeFilter<"Attachment"> | $Enums.StorageType
+    fileData?: StringNullableFilter<"Attachment"> | string | null
+    fileUrl?: StringNullableFilter<"Attachment"> | string | null
+    createdAt?: DateTimeFilter<"Attachment"> | Date | string
+    updatedAt?: DateTimeNullableFilter<"Attachment"> | Date | string | null
+  }
+
+  export type AttachmentCreateManyTemplateInput = {
+    id?: number
+    type: $Enums.AttachmentType
+    fileName: string
+    fileType?: string | null
+    storageType?: $Enums.StorageType
+    fileData?: string | null
+    fileUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+  }
+
+  export type AttachmentUpdateWithoutTemplateInput = {
+    type?: EnumAttachmentTypeFieldUpdateOperationsInput | $Enums.AttachmentType
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileType?: NullableStringFieldUpdateOperationsInput | string | null
+    storageType?: EnumStorageTypeFieldUpdateOperationsInput | $Enums.StorageType
+    fileData?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type AttachmentUncheckedUpdateWithoutTemplateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumAttachmentTypeFieldUpdateOperationsInput | $Enums.AttachmentType
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileType?: NullableStringFieldUpdateOperationsInput | string | null
+    storageType?: EnumStorageTypeFieldUpdateOperationsInput | $Enums.StorageType
+    fileData?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type AttachmentUncheckedUpdateManyWithoutTemplateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumAttachmentTypeFieldUpdateOperationsInput | $Enums.AttachmentType
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileType?: NullableStringFieldUpdateOperationsInput | string | null
+    storageType?: EnumStorageTypeFieldUpdateOperationsInput | $Enums.StorageType
+    fileData?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
 
