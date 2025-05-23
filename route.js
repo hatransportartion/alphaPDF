@@ -9,7 +9,7 @@ const dotenv = require("dotenv").config();
 const asyncHandler = require('express-async-handler');
 
 const { mergeAndSavePDFs } = require("./utility/pdfmerging");
-const { isValidURL } = require("./utility/service");
+const { isValidURL, generateUniqueFilename } = require("./utility/service");
 const { findTemplateById, addTemplate, addAttachment, templateWithAttachments } = require("./prisma/db");
 
 router.post("/generate", asyncHandler( async (req, res) => {
@@ -70,22 +70,40 @@ router.post("/merge", asyncHandler(async (req, res) => {
   }));
 
 router.get("/template/add", asyncHandler(async (req, res) => {
-    // const requestBody = req.body;
-    // const { templateName, templateID, content } = requestBody;
+    
+    // const templateName = "RateCon";
+    // const templateID = "6e551c6309b54ae79f7f0ac5af62f0ee";
+    // const content = require('fs').readFileSync('./views/ratecon.hbs', 'utf8');
+    // // const logoPath = path.resolve(__dirname, '../logo/HAlogo.png');
+    // const logoPath = path.join(__dirname, './logo/HAlogo.png');
+    // const logoBase64 = require('fs').readFileSync(logoPath, 'base64');
 
-    // // Validate the request body
-    // if (!templateName || !templateID || !content) {
-    //   return res.status(400).json({ error: true, message: "All fields are required" });
+    // // Add the template to the database
+    // const newTemplate = await addTemplate(templateName, templateID, content);
+    // const attachemnt = await addAttachment(templateID, logoBase64);
+    
+    // if (!newTemplate || !attachemnt) {
+    //   if (newTemplate) {
+    //     await db.PDFTemplate.delete({ where: { templateId: templateID } });
+    //   }
+    //   return res.status(500).json({ error: true, message: "Failed to add template" });
     // }
+    // res.status(201).json({
+    //   error: false,
+    //   message: "Template added successfully",
+    //   data: newTemplate,
+    // });
 
-    const templateName = "RateCon";
-    const templateID = "6e551c6309b54ae79f7f0ac5af62f0ee";
-    const content = require('fs').readFileSync('./views/ratecon.hbs', 'utf8');
-    // const logoPath = path.resolve(__dirname, '../logo/HAlogo.png');
+    const templateName = "Payroll HA";
+    const fileName = generateUniqueFilename();
+    console.log(fileName);
+    const templateID = "240ea7b35a094098a93d320ecbffcc95";
+    const content = require('fs').readFileSync('./views/payroll.hbs', 'utf8');
+    // // const logoPath = path.resolve(__dirname, '../logo/HAlogo.png');
     const logoPath = path.join(__dirname, './logo/HAlogo.png');
     const logoBase64 = require('fs').readFileSync(logoPath, 'base64');
 
-    // Add the template to the database
+    // // Add the template to the database
     const newTemplate = await addTemplate(templateName, templateID, content);
     const attachemnt = await addAttachment(templateID, logoBase64);
     
@@ -100,6 +118,8 @@ router.get("/template/add", asyncHandler(async (req, res) => {
       message: "Template added successfully",
       data: newTemplate,
     });
+
+
   }));
   
 module.exports = router;
