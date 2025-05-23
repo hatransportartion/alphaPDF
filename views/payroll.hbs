@@ -1,17 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <title>Payroll</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      font-size: 14px;
-      color: #333;
-      margin: 0;
-      padding: 0;
-    }
+
+    @page {
+    margin: 20px 20px 20px 20px; /* top, right, bottom, left */
+  }
+
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    border-bottom: 1px solid #000;
+    padding: 10px 40px;
+    background: white;
+  }
+
+  footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    border-top: 1px solid #ccc;
+    text-align: center;
+    font-size: 11px;
+    color: #666;
+    padding: 10px 40px;
+    background: white;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #333;
+    margin: 0;
+  }
+
+  .content {
+    padding: 130px 20px 90px 20px;
+  }
+
 
     .container {
       max-width: 900px;
@@ -41,16 +74,6 @@
       text-transform: uppercase;
     }
 
-    .section {
-      padding: 15px 0;
-      border-bottom: 1px solid #ccc;
-    }
-
-    .section-title {
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
     .row {
       display: flex;
       justify-content: space-between;
@@ -73,12 +96,6 @@
       border: 1px solid #ccc;
     }
 
-    .footer {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 40px;
-    }
-
     .signature-line {
       border-bottom: 1px solid #000;
       width: 250px;
@@ -87,55 +104,65 @@
 
     .watermark {
       position: fixed;
-      top: 30%;
+      top: 40%;
       left: 40%;
       transform: translate(-50%, -50%) rotate(-30deg);
-      ;
       opacity: 0.3;
       z-index: 0;
-      width: 400px;
+      width: 500px;
       height: auto;
       pointer-events: none;
     }
-  </style>
-  <style>
+
     table {
       width: 100%;
       border-collapse: collapse;
       font-size: 11px;
       table-layout: fixed;
     }
-  
+
     th, td {
       border: 1px solid #ccc;
       padding: 4px;
       text-align: left;
       word-wrap: break-word;
     }
-  
+
     th {
       background-color: #f5f5f5;
     }
-  </style>
 
+    .summary {
+      margin-top: 20px;
+      font-size: 12px;
+    }
+
+    .section {
+      padding: 15px 0;
+      border-bottom: 1px solid #ccc;
+      margin-top: 30px; /* <-- add this line */
+    }
+
+  </style>
 </head>
 
 <body>
   <img src="data:image/png;base64,{{data.attachments.0.fileData}}" class="watermark" alt="Watermark" />
-
-  <div class="container">
-    <!-- Header -->
-    <div class="header">
-      <div><img src="data:image/png;base64,{{data.attachments.0.fileData}}" class="logo" /></div>
-      <div class="company-info">
-        <div class="name">HA TRANSPORTATION NW LLC</div>
-        <div>23406 Pacific Ave S, Ste 106</div>
-        <div>Kent, WA 98032</div>
-        <div>+1 (253) 237-2479</div>
-      </div>
+  <header>
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div><img src="data:image/png;base64,{{data.attachments.0.fileData}}" style="height: 120px;" /></div>
+    <div style="text-align: right;">
+      <div style="font-weight: bold; font-size: 18px; text-transform: uppercase;">HA TRANSPORTATION NW LLC</div>
+      <div>23406 Pacific Ave S, Ste 106</div>
+      <div>Kent, WA 98032</div>
+      <div>+1 (253) 237-2479</div>
     </div>
-
-    <table>
+  </div>
+</header>
+  <div class="content">
+    <!-- table, summary, contact, etc. -->
+    <!-- Load Table -->
+      <table>
         <thead>
           <tr>
             <th>Dispatch #</th>
@@ -151,51 +178,80 @@
           </tr>
         </thead>
         <tbody>
-            {{#each data.entries}}
-            <tr>
-              <td>{{dispatchNumber}}</td>
-              <td>{{loadNumber}}</td>
-              <td>{{truck}}</td>
-              <td>{{status}}</td>
-              <td>{{puDate}}</td>
-              <td>{{deliveryDate}}</td>
-              <td>{{shipperCity}}, {{shipperState}}</td>
-              <td>{{receiverCity}}, {{receiverState}}</td>
-              <td>{{gross}}</td>
-              <td>{{dispatchAmount}}</td>
-            </tr>
-            {{/each}}
-          </tbody>
+          {{#each data.loadData}}
+          <tr>
+            <td>{{dispatchNumber}}</td>
+            <td>{{loadNumber}}</td>
+            <td>{{truck}}</td>
+            <td>{{status}}</td>
+            <td>{{puDate}}</td>
+            <td>{{deliveryDate}}</td>
+            <td>{{shipperCity}}, {{shipperState}}</td>
+            <td>{{receiverCity}}, {{receiverState}}</td>
+            <td>{{gross}}</td>
+            <td>{{dispatchAmount}}</td>
+            
+          </tr>
+          {{/each}}
+        </tbody>
       </table>
 
-    <!-- Contact & Rate -->
-    <div class="section row">
-      <div class="col">
-        <div class="field"><b>Email: </b> accounting@handatransportation.com</div>
+      <!-- Summary Table -->
+      <div class="summary">
+        <table>
+          <tbody>
+            <tr><td><strong>Date</strong></td><td><strong>{{data.date}}</strong></td></tr>
+            <tr><td><strong>Total Gross</strong></td><td><strong>{{data.totalGross}}</strong></td></tr>
+            <tr><td><strong>Dispatch</strong></td><td><strong>{{data.totaldispatch}}</strong></td></tr>
+            <tr><td><strong>DOT</strong></td><td><strong>{{data.dot}}</strong></td></tr>
+            <tr><td><strong>Insurance</strong></td><td><strong>{{data.insurance}}</strong></td></tr>
+            <tr><td><strong>Trailer Rent</strong></td><td><strong>{{data.trailerRent}}</strong></td></tr>
+            <tr><td><strong>Fuel</strong></td><td><strong>{{data.fuel}}</strong></td></tr>
+            <tr><td><strong>Local Pickup & Delivery</strong></td><td><strong>{{data.localPickupAndDelivery}}</strong></td></tr>
+            <tr><td><strong>Misc</strong></td><td><strong>{{data.misc}}</strong></td></tr>
+            <tr><td><strong>IFTA</strong></td><td><strong>{{data.ifta}}</strong></td></tr>
+            <tr><td><strong>Tracking App</strong></td><td><strong>{{data.trackingApp}}</strong></td></tr>
+            <tr><td><strong>Repairs</strong></td><td><strong>{{data.repairs}}</strong></td></tr>
+            <tr><td><strong>Notes</strong></td><td>{{data.notes}}</td></tr>
+            <tr><td><strong>Net</strong></td><td><strong>{{data.net}}</strong></td></tr>
+          </tbody>
+        </table>
       </div>
-      <div class="col rate-box">
-        <div><b>Net Pay</b></div>
-        <div class="field">{{data.gross}}</div>
-        <div style="margin-top: 10px;">
-          All invoices must include signed proof of delivery and supporting documents.<br />
-          Please email to: Accounting@handatransportation.com<br />
-          or mail to: 23406 Pacific Ave S, Ste 106, Kent, WA 98032
+
+
+
+      <!-- Contact & Rate -->
+      <div class="section row">
+        <div class="col">
+          <div class="field"><b>Email: </b> accounting@handatransportation.com</div>
+        </div>
+        <div class="col rate-box">
+          <div><b>Net Pay: </b></div>
+          <div class="field"><b>{{data.net}}</b></div>
+          <div style="margin-top: 10px;">
+            <p>
+              If you have any questions or need further assistance, please don't hesitate to contact us at
+              <strong>accounting@handatransportation.com</strong>. We're here to help with any queries related to your statement or documentation.
+            </p>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Signature -->
-    <div class="footer">
-      <div>
-        <div><b>Signature</b></div>
-        <div class="signature-line"></div>
-      </div>
-      <div>
-        <div><b>Date</b></div>
-        <div class="signature-line"></div>
-      </div>
-    </div>
-  </div>
-</body>
+    
 
+<footer>
+  <p>HA Transportation NW LLC – 23406 Pacific Ave S, Ste 106, Kent, WA 98032</p>
+  <p>Phone: +1 (253) 237-2479 | Email: accounting@handatransportation.com</p>
+  <p style="font-style: italic;">Thank you for being a valued partner of HA Transportation.</p>
+</footer>
+
+
+   
+</body>
 </html>
+{{! This is a payroll template for H&A Transportation. It includes the company logo, contact information, and a table for load details. The summary section provides an overview of the financials related to the loads. The document is styled with CSS for a clean and professional appearance. }}
+{{! The watermark is included as a fixed image in the background. The document is structured to be printed or saved as a PDF. }}
+{{! The template uses Handlebars syntax for dynamic data rendering. }}
+{{! The code includes sections for header, load table, summary, and footer with contact information. }}
+{{! The signature line is provided for acknowledgment of the document. }}
