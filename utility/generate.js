@@ -4,7 +4,7 @@ const handlebars = require('handlebars');
 const puppeteer = require('puppeteer');
 const { generateUniqueFilename } = require('./service');
 
-async function generatePDF(templateJSON, data) {
+async function generatePDF({content, attachments}, data) {
   try {
     const fileName = generateUniqueFilename();
     let outputFilePath = `/home/app/docs/${fileName}.pdf`;
@@ -15,20 +15,12 @@ async function generatePDF(templateJSON, data) {
       outputFilePath = `PDFs/${fileName}.pdf`;
     }
     console.log("Output File Path: ", outputFilePath);
-    // console.log("DIrr Name ", __dirname);
-    // const templatePath = path.join(__dirname, '../views', `${templateID}.hbs`);
 
-    // // Ensure template file exists
-    // if (!fs.existsSync(templatePath)) {
-    //   throw new Error(`❌ Template file "${templateID}.hbs" not found in /views`);
-    // }
+    data.attachments = attachments;
 
-    // const logoPath = path.resolve(__dirname, '../logo/HAlogo.png');
-    // const logoBase64 = fs.readFileSync(logoPath, 'base64');
-    // data.logoBase64 = logoBase64;
-
-
-    const template = handlebars.compile(templateJSON.content);
+    const template = handlebars.compile(content);
+    console.log("Template: ", template);
+    console.log("Data: ", data);
     const html = template({data});
 
     const browser = await puppeteer.launch({

@@ -10,7 +10,7 @@ const asyncHandler = require('express-async-handler');
 
 const { mergeAndSavePDFs } = require("./utility/pdfmerging");
 const { isValidURL } = require("./utility/service");
-const { findTemplateById, addTemplate } = require("./prisma/db");
+const { findTemplateById, addTemplate, addAttachment, templateWithAttachments } = require("./prisma/db");
 
 router.post("/generate", asyncHandler( async (req, res) => {
     
@@ -18,39 +18,29 @@ router.post("/generate", asyncHandler( async (req, res) => {
     if (!requestBody) {
       return res.status(400).json({ error: true, message: "Request body is required" });
     }
-
-    const { recordID, templateID, data } = requestBody;
-    console.log("Record ID: ", recordID);
-    console.log("Template ID: ", templateID);
-    console.log("Data: ", data);
-
-    const template = await findTemplateById(templateID);
-    console.log("Template: ", template);
-    if (!template) {
-      return res.status(404).json({ error: true, message: "Template ID not found in database" });
-    }
-  
+    
     const { error, message } = await validateGenerateRequestBody(requestBody);
     if (error) {
       return res.status(400).json({ error: true, message });
     }
 
-    
-  
+    const { recordID, templateID, data } = requestBody;
 
-    const resp = await generatePDF(template, data);
+    const templateWithAttachment = await templateWithAttachments(templateID);
+
+    if (!templateWithAttachment) {
+      return res.status(404).json({ error: true, message: "Template not found" });
+    }
+  
+    const resp = await generatePDF(templateWithAttachment, data);
     console.log("Response: ", resp);
 
-    res.status(200).json({ error: false, message: "Request body is valid" });
-
-    // const PDFpath = path.join(__dirname, 'PDFs', `${recordID}.pdf`);
-    // console.log("PDF Path: ", PDFpath);
-
-    // res.status(200).json({
-    //   "error": false,
-    //   "message": "PDF generated successfully",
-    //   "path": PDFpath,
-    // });
+    res.status(200).json({
+      "error": false,
+      "message": "PDF generated successfully",
+      "path": res.path,
+      "fileName": resp.fileName,
+    });
 
 
   }));
@@ -91,19 +81,13 @@ router.get("/template/add", asyncHandler(async (req, res) => {
     const templateName = "RateCon";
     const templateID = "6e551c6309b54ae79f7f0ac5af62f0ee";
     const content = require('fs').readFileSync('./views/ratecon.hbs', 'utf8');
+    // const logoPath = path.resolve(__dirname, '../logo/HAlogo.png');
+    const logoPath = path.join(__dirname, './logo/HAlogo.png');
+    const logoBase64 = require('fs').readFileSync(logoPath, 'base64');
 
     // Add the template to the database
     const newTemplate = await addTemplate(templateName, templateID, content);
-    const attachemnt = await db.attachment.create({
-      data: {
-        templateId: templateID,
-        type: 'logo',
-        fileName: 'logo.png',
-        fileType: 'image/png',
-        storageType: 'BASE64',
-        fileData: logoBase64,
-      },
-    });
+    const attachemnt = await addAttachment(templateID, logoBase64);
     
     if (!newTemplate || !attachemnt) {
       if (newTemplate) {

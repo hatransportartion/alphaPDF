@@ -24,7 +24,7 @@ model Attachment {
   fileType String? // e.g., 'image/png', 'application/pdf'
 
   storageType StorageType @default(URL)
-  fileData    String? // Base64 string, only used if storageType == BASE64
+  fileData    String?     @db.LongText // Base64 string, only used if storageType == BASE64
   fileUrl     String? // Used if storageType == URL
 
   createdAt DateTime  @default(now())
