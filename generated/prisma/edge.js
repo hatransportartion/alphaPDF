@@ -164,7 +164,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/sandeep/Node/CraftMyPDF/generated/prisma",
+      "value": "/Users/sandeep2197/dev/Alpha/alphaPDF/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -178,7 +178,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/sandeep/Node/CraftMyPDF/prisma/schema.prisma",
+    "sourceFilePath": "/Users/sandeep2197/dev/Alpha/alphaPDF/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
