@@ -114,13 +114,13 @@ router.get(
     const templateName = "Payroll HA";
     const fileName = generateUniqueFilename();
     console.log(fileName);
-    const templateID = "240ea7b35a094098a93d320ecbffcc95";
-    const content = require("fs").readFileSync("./views/payroll.hbs", "utf8");
-    // const templateID = "31ef472e8da7454c88e62a433907f275";
-    // const content = require("fs").readFileSync(
-    //   "./views/payrollSarbloh.hbs",
-    //   "utf8"
-    // );
+    // const templateID = "240ea7b35a094098a93d320ecbffcc95";
+    // const content = require("fs").readFileSync("./views/payroll.hbs", "utf8");
+    const templateID = "31ef472e8da7454c88e62a433907f275";
+    const content = require("fs").readFileSync(
+      "./views/payrollSarbloh.hbs",
+      "utf8"
+    );
     // // const logoPath = path.resolve(__dirname, '../logo/HAlogo.png');
     const logoPath = path.join(__dirname, "./logo/HAlogo.png");
     const logoBase64 = require("fs").readFileSync(logoPath, "base64");
