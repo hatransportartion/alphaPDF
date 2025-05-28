@@ -1,6 +1,5 @@
 const fs = require("fs");
 const { PDFDocument } = require("pdf-lib");
-const { generateUniqueFilename } = require("../utility/service");
 
 async function mergePDFs(pdfPaths, outputPath) {
   console.log("MergePDFs --->> ", pdfPaths);
@@ -86,4 +85,9 @@ async function mergePDFs(pdfPaths, outputPath) {
   }
 
   return await pdfDoc.save();
+}
+
+
+module.exports = {
+  mergePDFs
 }
