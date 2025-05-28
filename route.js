@@ -8,7 +8,7 @@ const { generatePDF } = require("./utility/generate");
 const dotenv = require("dotenv").config();
 const asyncHandler = require("express-async-handler");
 
-const { mergeAndSavePDFs } = require("./utility/pdfmerging");
+const { mergePDFs } = require("./utility/pdfmerging");
 const { isValidURL, generateUniqueFilename } = require("./utility/service");
 const {
   findTemplateById,
@@ -75,7 +75,7 @@ router.post(
     }
 
     //Merge and save PDFs
-    const resp = await mergeAndSavePDFs(validURLs);
+    const resp = await mergePDFs(validURLs);
     res.status(200).json({
       error: false,
       message: "PDFs merged successfully",
