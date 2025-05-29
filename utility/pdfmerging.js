@@ -1,5 +1,6 @@
 const fs = require("fs");
 const { PDFDocument } = require("pdf-lib");
+const { generateUniqueFilename } = require("./service");
 
 async function mergePDFs(pdfPaths, outputPath) {
   console.log("MergePDFs --->> ", pdfPaths);
@@ -87,7 +88,32 @@ async function mergePDFs(pdfPaths, outputPath) {
   return await pdfDoc.save();
 }
 
+async function mergeAndSavePDFs(pdfPaths) {
+  try {
+    console.log("Merging and saving PDFs -->> ");
+    const fileName = generateUniqueFilename();
+    let outputFilePath = `/home/app/docs/${fileName}.pdf`;
+    const NODE_ENV = process.env.NODE_ENV || "local";
+    console.log("NODE_ENV: ", NODE_ENV);
+    console.log("Output File Path: ", outputFilePath);
+    if (NODE_ENV === "local") {
+      outputFilePath = `PDFs/${fileName}.pdf`;
+    }
+    console.log("Output File Path: ", outputFilePath);
+    const mergedPdfBytes = await mergePDFs(pdfPaths, outputFilePath);
+    fs.writeFileSync(outputFilePath, mergedPdfBytes);
+    console.log(
+      "PDFs merged successfully. Merged file saved at:",
+      outputFilePath
+    );
+    return fileName;
+  } catch (error) {
+    console.error("Error merging PDFs:", error);
+    throw error;
+  }
+}
 
 module.exports = {
-  mergePDFs
+  mergePDFs,
+  mergeAndSavePDFs
 }
