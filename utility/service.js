@@ -65,9 +65,10 @@ async function getAllAttahcmentURL(requestBody) {
 }
 
 function generateUniqueFilename() {
-  const uniqueId = uuidv4();  // Generate unique UUID
-  return `${uniqueId}`;  // Combine UUID with the file extension
+  const uniqueId = uuidv4().replace(/-/g, ""); // Remove all hyphens
+  return `${uniqueId}`;
 }
+
 
 async function isValidURL(url) {
   try {

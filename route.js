@@ -16,6 +16,7 @@ const {
   addAttachment,
   templateWithAttachments,
 } = require("./prisma/db");
+const { error } = require("console");
 
 router.post(
   "/generate",
@@ -111,38 +112,52 @@ router.get(
     //   data: newTemplate,
     // });
 
-    const templateName = "Payroll HA";
+    const templateName = "Payroll 313";
     const fileName = generateUniqueFilename();
     console.log(fileName);
     // const templateID = "240ea7b35a094098a93d320ecbffcc95";
     // const content = require("fs").readFileSync("./views/payroll.hbs", "utf8");
-    const templateID = "31ef472e8da7454c88e62a433907f275";
-    const content = require("fs").readFileSync(
-      "./views/payrollSarbloh.hbs",
-      "utf8"
-    );
-    // // const logoPath = path.resolve(__dirname, '../logo/HAlogo.png');
-    const logoPath = path.join(__dirname, "./logo/HAlogo.png");
-    const logoBase64 = require("fs").readFileSync(logoPath, "base64");
+    // const templateID = "31ef472e8da7454c88e62a433907f275";
+    // const content = require("fs").readFileSync(
+    //   "./views/payrollSarbloh.hbs",
+    //   "utf8"
+    // );
+    // // // const logoPath = path.resolve(__dirname, '../logo/HAlogo.png');
+    // const logoPath = path.join(__dirname, "./logo/HAlogo.png");
+    // const logoBase64 = require("fs").readFileSync(logoPath, "base64");
 
-    // // Add the template to the database
-    const newTemplate = await addTemplate(templateName, templateID, content);
-    const attachemnt = await addAttachment(templateID, logoBase64);
+    // // // Add the template to the database
+    // const newTemplate = await addTemplate(templateName, templateID, content);
+    // const attachemnt = await addAttachment(templateID, logoBase64);
 
-    if (!newTemplate || !attachemnt) {
-      if (newTemplate) {
-        await db.PDFTemplate.delete({ where: { templateId: templateID } });
-      }
-      return res
-        .status(500)
-        .json({ error: true, message: "Failed to add template" });
-    }
+    // if (!newTemplate || !attachemnt) {
+    //   if (newTemplate) {
+    //     await db.PDFTemplate.delete({ where: { templateId: templateID } });
+    //   }
+    //   return res
+    //     .status(500)
+    //     .json({ error: true, message: "Failed to add template" });
+    // }
+    // res.status(201).json({
+    //   error: false,
+    //   message: "Template added successfully",
+    //   data: newTemplate,
+    // });
     res.status(201).json({
       error: false,
       message: "Template added successfully",
-      data: newTemplate,
     });
   })
 );
+
+router.post('/logo/add', asyncHandler(async (req,res) => {
+  console.log("Hello");
+  c
+  res.status(200).json({
+    error:false,
+    message:"Logo Added",
+    data:"hh"
+  })
+}));
 
 module.exports = router;
