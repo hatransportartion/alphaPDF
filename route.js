@@ -112,37 +112,39 @@ router.get(
     //   data: newTemplate,
     // });
 
-    const templateName = "Payroll 313";
+    const templateName = "Payroll Sarbloh";
     const fileName = generateUniqueFilename();
-    console.log(fileName);
+    console.log(fileName); //b45f596c-d874-4f35-8980-c6f7dbd5c916
     // const templateID = "240ea7b35a094098a93d320ecbffcc95";
     // const content = require("fs").readFileSync("./views/payroll.hbs", "utf8");
-    // const templateID = "31ef472e8da7454c88e62a433907f275";
-    // const content = require("fs").readFileSync(
-    //   "./views/payrollSarbloh.hbs",
-    //   "utf8"
-    // );
-    // // // const logoPath = path.resolve(__dirname, '../logo/HAlogo.png');
-    // const logoPath = path.join(__dirname, "./logo/HAlogo.png");
-    // const logoBase64 = require("fs").readFileSync(logoPath, "base64");
+    const templateID = "31ef472e8da7454c88e62a433907f275";  //sarbloh
+    // const templateID = "65a7aded06524362a33daf702ae98c21"; //313 Transport
+    // const templateID = "cf6fde884a6d44608fe78db22640e69c"; //Chandi Logistics
+    const content = require("fs").readFileSync(
+      "./views/payrollSarbloh.hbs",
+      "utf8"
+    );
+    // // const logoPath = path.resolve(__dirname, '../logo/HAlogo.png');
+    const logoPath = path.join(__dirname, "./logo/Sarbloh_Logo1.png");
+    const logoBase64 = require("fs").readFileSync(logoPath, "base64");
 
-    // // // Add the template to the database
-    // const newTemplate = await addTemplate(templateName, templateID, content);
-    // const attachemnt = await addAttachment(templateID, logoBase64);
+    // // Add the template to the database
+    const newTemplate = await addTemplate(templateName, templateID, content);
+    const attachemnt = await addAttachment(templateID, logoBase64);
 
-    // if (!newTemplate || !attachemnt) {
-    //   if (newTemplate) {
-    //     await db.PDFTemplate.delete({ where: { templateId: templateID } });
-    //   }
-    //   return res
-    //     .status(500)
-    //     .json({ error: true, message: "Failed to add template" });
-    // }
-    // res.status(201).json({
-    //   error: false,
-    //   message: "Template added successfully",
-    //   data: newTemplate,
-    // });
+    if (!newTemplate || !attachemnt) {
+      if (newTemplate) {
+        await db.PDFTemplate.delete({ where: { templateId: templateID } });
+      }
+      return res
+        .status(500)
+        .json({ error: true, message: "Failed to add template" });
+    }
+    res.status(201).json({
+      error: false,
+      message: "Template added successfully",
+      data: newTemplate,
+    });
     res.status(201).json({
       error: false,
       message: "Template added successfully",
