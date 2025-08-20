@@ -122,6 +122,20 @@
       min-width: 250px;
     }
 
+    .page-break {
+        page-break-before: always;
+        margin-top: 130px; /* Adjust for header */
+
+    }
+
+    .section-title {
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 15px;
+        margin-top: 10px;;
+    }
+
   </style>
 </head>
 
@@ -210,6 +224,37 @@
         </p>
       </div>
     </div>
+    </div>
+
+    <div class="page-break"></div>
+    <div class="content">
+      <div class="section-title">Fuel Report</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Transaction Number</th>
+            <th>Transaction Date</th>
+            <th>TruckStop</th>
+            <th>DEF Gallons</th>
+            <th>Gross Cost</th>
+            <th>Discount</th>
+            <th>Total Amt Post Discount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each data.fuelData}}
+          <tr>
+            <td>{{transactionNumber}}</td>
+            <td>{{transactionDate}}</td>
+            <td>{{truckStop}}</td>
+            <td>{{defGallons}}</td>
+            <td>{{totalAmount}}</td>
+            <td>{{discountOOP}}</td>
+            <td>{{totalAmtDueOOP}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
     </div>
 
       
