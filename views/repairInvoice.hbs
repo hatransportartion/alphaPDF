@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Invoice</title>
+  <style>
+    @page {
+      margin: 20px 20px 20px 20px;
+    }
+
+    @media print {
+      body {
+        font-size: 12pt;
+        color: black;
+        margin-top: 100px;
+        margin-bottom: 60px;
+      }
+      .no-print {
+        display: none;
+      }
+      header {
+        position: fixed;
+        top: 0;
+        height: 100px;
+      }
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      color: #333;
+      margin-top: 120px;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100px;
+      border-bottom: 1px solid #000;
+      padding: 10px 40px;
+      background: white;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      border-top: 1px solid #ccc;
+      text-align: center;
+      font-size: 11px;
+      color: #666;
+      padding: 10px 40px;
+      background: white;
+    }
+
+    .company-info { text-align: right; }
+    .company-info .name {
+      font-weight: bold;
+      font-size: 18px;
+      text-transform: uppercase;
+    }
+
+    .watermark {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); /* Center horizontally + vertically */
+      opacity: 0.1;                     /* Lighter so text is readable */
+      z-index: 0;
+      width: 250px;                     /* Reduced size */
+      height: auto;
+      pointer-events: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 6px;
+      text-align: left;
+      word-wrap: break-word;
+    }
+
+    th { background-color: #f5f5f5; }
+
+    .summary {
+      margin-top: 20px;
+      font-size: 13px;
+      width: 300px;
+      float: right;
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+
+    .signature {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 50px;
+    }
+    .signature .col {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Watermark -->
+  <img src="data:image/png;base64,{{data.attachments.0.fileData}}" class="watermark" alt="Watermark" />
+
+  <!-- Header -->
+  <header>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div><img src="data:image/png;base64,{{data.attachments.0.fileData}}" style="height: 120px;" /></div>
+      <div style="text-align: right;">
+        <div style="font-weight: bold; font-size: 18px; text-transform: uppercase;">APEX LION TRUCK & TRAILER REPAIR</div>
+        <div>23408 30th Ave South</div>
+        <div>Kent, WA 98032</div>
+        <div>+1 (253) 272-9253</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Invoice Details -->
+  <div style="margin-top: 20px; display: flex; justify-content: space-between;">
+    <div>
+      <p><b>Invoice #: </b>{{data.invoiceNumber}}</p>
+      <p><b>Date: </b>{{data.invoiceDate}}</p>
+      <p><b>Due Date: </b>{{data.dueDate}}</p>
+    </div>
+    <div>
+      <p><b>Billed To:</b></p>
+      <p>{{data.customerName}}</p>
+      <p>{{data.customerAddress}}</p>
+      <p>{{data.customerPhone}}</p>
+    </div>
+  </div>
+
+  <!-- Truck / Unit Info -->
+  <div style="margin-top: 15px;">
+    <p><b>Truck #: </b>{{data.truckNumber}}</p>
+    <p><b>VIN: </b>{{data.truckVIN}}</p>
+    <p><b>License Plate: </b>{{data.plate}}</p>
+  </div>
+
+  <!-- Repair Details Table -->
+  <div class="section-title">Repair Details</div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:40%;">Description</th>
+        <th style="width:20%;">Parts Cost</th>
+        <th style="width:20%;">Labor Cost</th>
+        <th style="width:20%;">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each data.repairs}}
+      <tr>
+        <td>{{this.description}}</td>
+        <td>{{this.partsCost}}</td>
+        <td>{{this.laborCost}}</td>
+        <td>{{this.total}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <!-- Summary -->
+  <div class="summary">
+    <p><b>Subtotal:</b> {{data.subtotal}}</p>
+    <p><b>Tax ({{data.taxRate}}%):</b> {{data.tax}}</p>
+    <hr />
+    <p><b>Total:</b> {{data.total}}</p>
+  </div>
+
+  <!-- Signature -->
+  <div class="signature">
+    <div class="col"><b>Authorized Signature</b><br><br>______________________</div>
+    <div class="col"><b>Customer Signature</b><br><br>______________________</div>
+  </div>
+
+  <!-- Net Pay Info (Optional box you had before) -->
+  <div class="col" style="background-color: #f2f2f2; border: 1px solid #ccc; padding: 10px; margin-top:40px;">
+    <div><b>Net Pay: </b>{{data.net}}</div>
+    <p style="margin-top: 10px;">
+      For questions, please contact us at <strong>operations@handatransportation.com</strong>.
+    </p>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>APEX LION TRUCK & TRAILER REPAIR – 23408 30th Ave South, Kent, WA 98032</p>
+    <p>Phone: +1 (253) 272-9253 | Email: operations@handatransportation.com</p>
+    <p style="font-style: italic;">Thank you for your business!</p>
+  </footer>
+</body>
+</html>
