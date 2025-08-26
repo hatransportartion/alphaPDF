@@ -41,6 +41,37 @@ async function addTemplate(templateName, templateId, content) {
   });
 }
 
+//function to delete template
+async function deleteTemplate(templateId) {
+  try {
+    // Check if template exists
+    const existing = await prisma.pDFTemplate.findUnique({
+      where: { templateId },
+    });
+
+    if (!existing) {
+      return { success: false, message: "Template not found" };
+    }
+
+    // Delete attachments (if no cascade rule)
+    await prisma.attachment.deleteMany({
+      where: { templateId },
+    });
+
+    // Delete template
+    await prisma.pDFTemplate.delete({
+      where: { templateId },
+    });
+
+    return { success: true, message: "Template deleted successfully" };
+  } catch (error) {
+    console.error(`Error deleting template ${templateId}:`, error);
+    throw error;
+  }
+}
+
+
+
 async function addAttachment(templateId, fileData) {
   return await prisma.attachment.create({
     data: {
@@ -57,5 +88,6 @@ module.exports = {
   findTemplateById,
   addTemplate,
   addAttachment,
-  templateWithAttachments
+  templateWithAttachments,
+  deleteTemplate
 };

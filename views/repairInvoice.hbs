@@ -101,12 +101,7 @@
       padding: 10px;
     }
 
-    .signature {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 50px;
-    }
-    .signature .col {
+    .col {
       flex: 1;
       min-width: 250px;
     }
@@ -173,10 +168,10 @@
     <tbody>
       {{#each data.repairs}}
       <tr>
-        <td>{{this.description}}</td>
-        <td>{{this.partsCost}}</td>
-        <td>{{this.laborCost}}</td>
-        <td>{{this.total}}</td>
+        <td>{{description}}</td>
+        <td>{{partsCost}}</td>
+        <td>{{laborCost}}</td>
+        <td>{{total}}</td>
       </tr>
       {{/each}}
     </tbody>
@@ -190,15 +185,10 @@
     <p><b>Total:</b> {{data.total}}</p>
   </div>
 
-  <!-- Signature -->
-  <div class="signature">
-    <div class="col"><b>Authorized Signature</b><br><br>______________________</div>
-    <div class="col"><b>Customer Signature</b><br><br>______________________</div>
-  </div>
 
   <!-- Net Pay Info (Optional box you had before) -->
   <div class="col" style="background-color: #f2f2f2; border: 1px solid #ccc; padding: 10px; margin-top:40px;">
-    <div><b>Net Pay: </b>{{data.net}}</div>
+    <div><b>Net Pay: {{data.net}}</b></div>
     <p style="margin-top: 10px;">
       For questions, please contact us at <strong>operations@handatransportation.com</strong>.
     </p>
