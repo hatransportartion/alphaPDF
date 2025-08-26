@@ -5,194 +5,243 @@
   <title>Invoice</title>
   <style>
     @page {
-      margin: 20px 20px 20px 20px;
+      margin: 25mm 20mm 25mm 20mm;
     }
 
     @media print {
-      body {
-        font-size: 12pt;
-        color: black;
-        margin-top: 100px;
-        margin-bottom: 60px;
-      }
-      .no-print {
-        display: none;
-      }
-      header {
-        position: fixed;
-        top: 0;
-        height: 100px;
-      }
+      body { font-size: 11pt; margin: 0; }
+      header { position: fixed; top: 0; left: 0; right: 0; }
+      footer { position: fixed; bottom: 0; left: 0; right: 0; }
     }
 
     body {
-      font-family: Arial, sans-serif;
-      font-size: 14px;
+      font-family: "Segoe UI", Arial, sans-serif;
       color: #333;
-      margin-top: 120px;
+      margin: 0;
+      padding: 0;
+      font-size: 13px;
+      background: #fff;
     }
 
     header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 100px;
-      border-bottom: 1px solid #000;
-      padding: 10px 40px;
-      background: white;
+      background: #fff;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #eee;
     }
 
-    footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 60px;
-      border-top: 1px solid #ccc;
-      text-align: center;
-      font-size: 11px;
-      color: #666;
-      padding: 10px 40px;
-      background: white;
-    }
+    header img { height: 80px; }
 
     .company-info { text-align: right; }
     .company-info .name {
+      font-size: 20px;
       font-weight: bold;
-      font-size: 18px;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
+      margin-bottom: 4px;
     }
 
     .watermark {
       position: fixed;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%); /* Center horizontally + vertically */
-      opacity: 0.1;                     /* Lighter so text is readable */
+      transform: translate(-50%, -50%);
+      opacity: 0.05;
       z-index: 0;
-      width: 250px;                     /* Reduced size */
-      height: auto;
-      pointer-events: none;
+      width: 350px;
+    }
+
+    .content {
+      padding: 40px;
+      position: relative;
+      z-index: 1;
+      margin-top: 140px; /* ✅ Prevents overlap with fixed header */
+    }
+
+
+    .invoice-header {
+      display: flex;
+      justify-content: space-between;
+      margin: 30px 0;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    .invoice-header h1 {
+      margin: 0;
+      font-size: 26px;
+      color: #222;
+    }
+
+    .invoice-meta p { margin: 3px 0; }
+
+    .bill-ship {
+      display: flex;
+      justify-content: space-between;
+      margin: 25px 0;
+    }
+
+    .bill-ship div { width: 48%; }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: bold;
+      margin: 20px 0 10px 0;
+      text-transform: uppercase;
+      color: #333;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 12px;
-      margin-top: 20px;
+      margin-top: 10px;
+      font-size: 12.5px;
     }
 
     th, td {
-      border: 1px solid #ccc;
-      padding: 6px;
+      padding: 10px;
+      border: 1px solid #ddd;
       text-align: left;
-      word-wrap: break-word;
     }
 
-    th { background-color: #f5f5f5; }
+    th {
+      background: #f9f9f9;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
 
     .summary {
-      margin-top: 20px;
-      font-size: 13px;
+      margin-top: 30px;
       width: 300px;
       float: right;
-      border: 1px solid #ccc;
-      padding: 10px;
+      font-size: 13px;
+      border: 1px solid #ddd;
+      background: #fafafa;
+      padding: 12px;
+      border-radius: 4px;
     }
 
-    .col {
-      flex: 1;
-      min-width: 250px;
+    .summary p {
+      display: flex;
+      justify-content: space-between;
+      margin: 6px 0;
     }
 
-    .section-title {
+    .summary .total {
       font-size: 16px;
       font-weight: bold;
-      margin-bottom: 10px;
-      margin-top: 20px;
+      color: #000;
+      border-top: 2px solid #ddd;
+      padding-top: 8px;
+      margin-top: 8px;
+    }
+
+    .net-pay-box {
+      clear: both;
+      background: #f9f9f9;
+      border: 1px solid #ccc;
+      padding: 12px;
+      margin-top: 40px;
+      font-size: 13px;
+      text-align: right;
+    }
+    .net-pay-box b {
+      font-size: 15px;
+      color: #000;
+    }
+
+
+    footer {
+      border-top: 1px solid #eee;
+      text-align: center;
+      font-size: 11px;
+      color: #666;
+      padding: 15px 40px;
+      background: #fafafa;
     }
   </style>
 </head>
-
 <body>
   <!-- Watermark -->
   <img src="data:image/png;base64,{{data.attachments.0.fileData}}" class="watermark" alt="Watermark" />
 
   <!-- Header -->
   <header>
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-      <div><img src="data:image/png;base64,{{data.attachments.0.fileData}}" style="height: 120px;" /></div>
-      <div style="text-align: right;">
-        <div style="font-weight: bold; font-size: 18px; text-transform: uppercase;">APEX LION TRUCK & TRAILER REPAIR</div>
-        <div>23408 30th Ave South</div>
-        <div>Kent, WA 98032</div>
-        <div>+1 (253) 272-9253</div>
-      </div>
+    <img src="data:image/png;base64,{{data.attachments.0.fileData}}" />
+    <div class="company-info">
+      <div class="name">APEX LION TRUCK & TRAILER REPAIR</div>
+      <div>23408 30th Ave South</div>
+      <div>Kent, WA 98032</div>
+      <div>+1 (253) 272-9253</div>
     </div>
   </header>
 
-  <!-- Invoice Details -->
-  <div style="margin-top: 20px; display: flex; justify-content: space-between;">
-    <div>
-      <p><b>Invoice #: </b>{{data.invoiceNumber}}</p>
-      <p><b>Date: </b>{{data.invoiceDate}}</p>
-      <p><b>Due Date: </b>{{data.dueDate}}</p>
+  <!-- Content -->
+  <div class="content">
+    <!-- Invoice Header -->
+    <div class="invoice-header">
+      <h1>Invoice</h1>
+      <div class="invoice-meta">
+        <p><b>Invoice #: </b>{{data.invoiceNumber}}</p>
+        <p><b>Date: </b>{{data.invoiceDate}}</p>
+        <p><b>Due Date: </b>{{data.dueDate}}</p>
+      </div>
     </div>
-    <div>
-      <p><b>Billed To:</b></p>
-      <p>{{data.customerName}}</p>
-      <p>{{data.customerAddress}}</p>
-      <p>{{data.customerPhone}}</p>
+
+    <!-- Billing / Truck Info -->
+    <div class="bill-ship">
+      <div>
+        <p><b>Billed To:</b></p>
+        <p>{{data.customerName}}</p>
+        <p>{{data.customerAddress}}</p>
+        <p>{{data.customerPhone}}</p>
+      </div>
+      <div>
+        <p><b>Truck Details:</b></p>
+        <p>Truck #: {{data.truckNumber}}</p>
+        <p>VIN: {{data.truckVIN}}</p>
+        <p>License Plate: {{data.plate}}</p>
+      </div>
     </div>
+
+    <!-- Repair Details -->
+    <div class="section-title">Repair Details</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:40%;">Description</th>
+          <th style="width:20%;">Parts Cost</th>
+          <th style="width:20%;">Labor Cost</th>
+          <th style="width:20%;">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each data.repairs}}
+        <tr>
+          <td>{{description}}</td>
+          <td>{{partsCost}}</td>
+          <td>{{laborCost}}</td>
+          <td>{{total}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+
+    <!-- Summary -->
+    <div class="summary">
+      <p><span>Subtotal:</span> <span>{{data.subtotal}}</span></p>
+      <p><span>Tax ({{data.taxRate}}%):</span> <span>{{data.tax}}</span></p>
+      <p class="total"><span>Total:</span> <span>{{data.total}}</span></p>
+    </div>
+
+   <!-- Net Pay -->
+  <div class="net-pay-box">
+    <p><b>Net Pay: {{data.net}}</b></p>
   </div>
 
-  <!-- Truck / Unit Info -->
-  <div style="margin-top: 15px;">
-    <p><b>Truck #: </b>{{data.truckNumber}}</p>
-    <p><b>VIN: </b>{{data.truckVIN}}</p>
-    <p><b>License Plate: </b>{{data.plate}}</p>
-  </div>
-
-  <!-- Repair Details Table -->
-  <div class="section-title">Repair Details</div>
-  <table>
-    <thead>
-      <tr>
-        <th style="width:40%;">Description</th>
-        <th style="width:20%;">Parts Cost</th>
-        <th style="width:20%;">Labor Cost</th>
-        <th style="width:20%;">Total</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each data.repairs}}
-      <tr>
-        <td>{{description}}</td>
-        <td>{{partsCost}}</td>
-        <td>{{laborCost}}</td>
-        <td>{{total}}</td>
-      </tr>
-      {{/each}}
-    </tbody>
-  </table>
-
-  <!-- Summary -->
-  <div class="summary">
-    <p><b>Subtotal:</b> {{data.subtotal}}</p>
-    <p><b>Tax ({{data.taxRate}}%):</b> {{data.tax}}</p>
-    <hr />
-    <p><b>Total:</b> {{data.total}}</p>
-  </div>
-
-
-  <!-- Net Pay Info (Optional box you had before) -->
-  <div class="col" style="background-color: #f2f2f2; border: 1px solid #ccc; padding: 10px; margin-top:40px;">
-    <div><b>Net Pay: {{data.net}}</b></div>
-    <p style="margin-top: 10px;">
-      For questions, please contact us at <strong>operations@handatransportation.com</strong>.
-    </p>
-  </div>
 
   <!-- Footer -->
   <footer>
