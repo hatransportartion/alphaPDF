@@ -103,7 +103,7 @@ async function uploadInventory(records) {
     inventoryId: r.inventoryId,
     airtableId: r.airtableId,
     itemName: r.itemName,
-    quantity: r.quantity,
+    quantity: r.quantity || 0,
     snapshotDate: r.snapshotDate || today,
   }));
 
