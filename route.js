@@ -231,4 +231,24 @@ router.post('/logo/add', asyncHandler(async (req,res) => {
   })
 }));
 
+
+router.post(
+  "/upload-inventory",
+  asyncHandler(async (req, res) => {
+    const records = req.body;
+
+    if (!Array.isArray(records) || records.length === 0) {
+      return res.status(400).json({ success: false, message: "No inventory records provided" });
+    }
+
+    try {
+      await uploadInventory(records); // call your existing Prisma function
+      res.json({ success: true, message: `${records.length} inventory records uploaded` });
+    } catch (error) {
+      console.error("Error uploading inventory:", error);
+      res.status(500).json({ success: false, message: "Failed to upload inventory", error });
+    }
+  })
+);
+
 module.exports = router;

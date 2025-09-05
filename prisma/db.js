@@ -84,10 +84,48 @@ async function addAttachment(templateId, fileData) {
   });
 }
 
+
+/**
+ * Upload inventory records to InventoryUpload table
+ * @param {Array} records - Array of inventory objects
+ *   Each object should have: { inventoryId, airtableId, itemName, quantity, snapshotDate(optional) }
+ * @returns {Promise<void>}
+ */
+async function uploadInventory(records) {
+  if (!records || !records.length) {
+    console.log("No records to upload.");
+    return;
+  }
+
+  // Add snapshotDate if missing
+  const today = new Date();
+  const data = records.map(r => ({
+    inventoryId: r.inventoryId,
+    airtableId: r.airtableId,
+    itemName: r.itemName,
+    quantity: r.quantity,
+    snapshotDate: r.snapshotDate || today,
+  }));
+
+  try {
+    await prisma.inventoryUpload.createMany({
+      data,
+      skipDuplicates: true, // optional, prevents duplicates for same inventoryId + snapshotDate
+    });
+
+    console.log(`✅ Uploaded ${data.length} inventory records`);
+  } catch (error) {
+    console.error("Error uploading inventory:", error);
+    throw error;
+  }
+}
+
+
 module.exports = {
   findTemplateById,
   addTemplate,
   addAttachment,
   templateWithAttachments,
-  deleteTemplate
+  deleteTemplate,
+  uploadInventory
 };

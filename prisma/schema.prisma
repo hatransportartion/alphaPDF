@@ -56,3 +56,14 @@ enum StorageType {
 }
 
 
+model InventoryUpload {
+  id           Int      @id @default(autoincrement())
+  inventoryId  String   // Your business inventory ID
+  airtableId   String   // Airtable record ID
+  itemName     String
+  quantity     Int
+  snapshotDate DateTime @default(now())
+
+  @@index([snapshotDate])                              // for faster queries by date
+  @@index([inventoryId, snapshotDate], map: "unique_inventory_per_day") // optional unique per day
+}
