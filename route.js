@@ -16,6 +16,7 @@ const {
   addAttachment,
   templateWithAttachments,
   deleteTemplate,
+  uploadInventory,
 } = require("./prisma/db");
 const { error } = require("console");
 
