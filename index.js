@@ -12,6 +12,8 @@ require('dotenv').config();
 const port = process.env.PORT || 9000;
 
 const route = require('./route');
+const excelRoute = require('./excelRoute');
+const e = require('express');
 
 // Middleware
 app.use(helmet());
@@ -33,6 +35,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/pdf', route );
+app.use('/excel', excelRoute);
 
 //Route not found
 app.use((req, res, next) => {
