@@ -159,14 +159,38 @@ router.get(
     // const logoBase64 = require("fs").readFileSync(logoPath, "base64");
 
     //Apex Lion Truck and Trialer 
-    const templateName = "Apex Lion Truck and Trailer";
+    // const templateName = "Apex Lion Truck and Trailer";
+    // const fileName = generateUniqueFilename();
+    // const templateID = "hughje884a6d44608fe78db22640e69c";
+    // const content = require("fs").readFileSync(
+    //   "./views/repairInvoice.hbs",
+    //   "utf8"
+    // );
+    // const logoPath = path.join(__dirname, "./logo/ApexRepair.png");
+    // const logoBase64 = require("fs").readFileSync(logoPath, "base64");
+
+    // // // Add the template to the database
+    // const deleteTemplateD = await deleteTemplate(templateID);
+    // const newTemplate = await addTemplate(templateName, templateID, content);
+    // const attachemnt = await addAttachment(templateID, logoBase64);
+
+    // if (!newTemplate || !attachemnt) {
+    //   if (newTemplate) {
+    //     await db.PDFTemplate.delete({ where: { templateId: templateID } });
+    //   }
+    //   return res
+    //     .status(500)
+    //     .json({ error: true, message: "Failed to add template" });
+    // }
+
+    const templateName = "Compnay Truck Payroll";
     const fileName = generateUniqueFilename();
-    const templateID = "hughje884a6d44608fe78db22640e69c";
+    const templateID = "5c3494c22039433785f1e7a9d7cf4664";
     const content = require("fs").readFileSync(
-      "./views/repairInvoice.hbs",
+      "./views/companyPayroll.hbs",
       "utf8"
     );
-    const logoPath = path.join(__dirname, "./logo/ApexRepair.png");
+    const logoPath = path.join(__dirname, "./logo/HAlogo.png");
     const logoBase64 = require("fs").readFileSync(logoPath, "base64");
 
     // // Add the template to the database
@@ -190,37 +214,38 @@ router.get(
   })
 );
 
-router.post('/template/add', asyncHandler(async (req,res) => {
-  const requestBody = req.body;
-  const {templateName, templateID, hbsFileName, logo} = requestBody;
-    const fileName = generateUniqueFilename();
-    const content = require("fs").readFileSync(
-      `./views/${hbsFileName}`,
-      "utf8"
-    );
-    const logoPath = path.join(__dirname, `./logo/${logo}`);
-    const logoBase64 = require("fs").readFileSync(logoPath, "base64");
+// router.post('/template/add', asyncHandler(async (req,res) => {
+//   const requestBody = req.body;
+//   const {templateName, templateID, hbsFileName, logo} = requestBody;
+//     const fileName = generateUniqueFilename();
+//     console.log("Request fileName: ", fileName);
+//     const content = require("fs").readFileSync(
+//       `./views/${hbsFileName}`,
+//       "utf8"
+//     );
+//     const logoPath = path.join(__dirname, `./logo/${logo}`);
+//     const logoBase64 = require("fs").readFileSync(logoPath, "base64");
 
-    // // Add the template to the database
-    const deleteTemplateD = await deleteTemplate(templateID);
-    const newTemplate = await addTemplate(templateName, templateID, content);
-    const attachemnt = await addAttachment(templateID, logoBase64);
+//     // // // Add the template to the database
+//     // const deleteTemplateD = await deleteTemplate(templateID);
+//     // const newTemplate = await addTemplate(templateName, templateID, content);
+//     // const attachemnt = await addAttachment(templateID, logoBase64);
 
-    if (!newTemplate || !attachemnt) {
-      if (newTemplate) {
-        await db.PDFTemplate.delete({ where: { templateId: templateID } });
-      }
-      return res
-        .status(500)
-        .json({ error: true, message: "Failed to add template" });
-    }
-    res.status(201).json({
-      error: false,
-      message: "Template added successfully",
-      data: newTemplate,
-    });
+//     // if (!newTemplate || !attachemnt) {
+//     //   if (newTemplate) {
+//     //     await db.PDFTemplate.delete({ where: { templateId: templateID } });
+//     //   }
+//     //   return res
+//     //     .status(500)
+//     //     .json({ error: true, message: "Failed to add template" });
+//     // }
+//     // res.status(201).json({
+//     //   error: false,
+//     //   message: "Template added successfully",
+//     //   data: newTemplate,
+//     // });
 
-}))
+// }))
 
 router.post('/logo/add', asyncHandler(async (req,res) => {
   console.log("Hello");
