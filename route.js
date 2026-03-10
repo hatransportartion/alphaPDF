@@ -214,6 +214,30 @@ router.get(
   })
 );
 
+router.put(
+  "/template/:templateID",
+  asyncHandler(async (req, res) => {
+    const { templateID } = req.params;
+    const { templateName, hbsFileName, logo } = req.body;
+
+    const content = require("fs").readFileSync(`./views/${hbsFileName}`, "utf8");
+
+    const logoPath = path.join(__dirname, `./logo/${logo}`);
+    const logoBase64 = require("fs").readFileSync(logoPath, "base64");
+
+    await deleteTemplate(templateID);
+
+    const newTemplate = await addTemplate(templateName, templateID, content);
+    await addAttachment(templateID, logoBase64);
+
+    res.json({
+      error: false,
+      message: "Template updated successfully",
+      data: newTemplate,
+    });
+  })
+);
+
 // router.post('/template/add', asyncHandler(async (req,res) => {
 //   const requestBody = req.body;
 //   const {templateName, templateID, hbsFileName, logo} = requestBody;
