@@ -88,6 +88,34 @@ router.post(
   })
 );
 
+router.post(
+  "/template",
+  asyncHandler(async (req, res) => {
+    const { templateName, templateID, hbsFileName, logo } = req.body;
+
+    if (!templateName || !templateID || !hbsFileName || !logo) {
+      return res.status(400).json({
+        error: true,
+        message: "templateName, templateID, hbsFileName and logo are required",
+      });
+    }
+
+    const content = require("fs").readFileSync(`./views/${hbsFileName}`, "utf8");
+
+    const logoPath = path.join(__dirname, `./logo/${logo}`);
+    const logoBase64 = require("fs").readFileSync(logoPath, "base64");
+
+    const newTemplate = await addTemplate(templateName, templateID, content);
+    const attachment = await addAttachment(templateID, logoBase64);
+
+    res.status(201).json({
+      error: false,
+      message: "Template created successfully",
+      data: newTemplate,
+    });
+  })
+);``
+
 router.get(
   "/template/add",
   asyncHandler(async (req, res) => {
