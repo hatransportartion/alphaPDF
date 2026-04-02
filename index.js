@@ -14,6 +14,7 @@ const port = process.env.PORT || 9000;
 const route = require('./route');
 const excelRoute = require('./excelRoute');
 const e = require('express');
+const { generateUniqueFilename } = require('./utility/service');
 
 // Middleware
 app.use(helmet());
@@ -23,6 +24,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'logo')));
 app.engine('hbs', exphbs.engine({ extname: '.hbs', defaultLayout: false }));
 app.set('view engine', 'hbs');
+
+console.log(generateUniqueFilename());
 
 //LOg middleware
 app.use((req, res, next) => {
