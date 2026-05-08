@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const path = require("path");
+const fs = require("fs");
 
 const { validateGenerateRequestBody } = require("./utility/validate");
 const { generatePDF } = require("./utility/generate");
@@ -10,6 +11,7 @@ const asyncHandler = require("express-async-handler");
 
 const { mergeAndSavePDFs } = require("./utility/pdfmerging");
 const { isValidURL, generateUniqueFilename } = require("./utility/service");
+const templateRegistry = require("./utility/templateRegistry");
 const {
   findTemplateById,
   addTemplate,
@@ -18,6 +20,25 @@ const {
   deleteTemplate,
   uploadInventory,
 } = require("./prisma/db");
+
+// Loads a template + logo from disk (no DB), shaped like the DB result so it
+// can be passed straight into generatePDF.
+function loadTemplateFromDisk(hbsFile, logoFile) {
+  const hbsPath = path.join(__dirname, "views", hbsFile);
+  if (!fs.existsSync(hbsPath)) {
+    throw new Error(`Template file not found: ${hbsFile}`);
+  }
+  const content = fs.readFileSync(hbsPath, "utf8");
+  const attachments = [];
+  if (logoFile) {
+    const logoPath = path.join(__dirname, "logo", logoFile);
+    if (!fs.existsSync(logoPath)) {
+      throw new Error(`Logo file not found: ${logoFile}`);
+    }
+    attachments.push({ fileData: fs.readFileSync(logoPath, "base64") });
+  }
+  return { content, attachments };
+}
 const { error } = require("console");
 
 router.post(
@@ -30,19 +51,38 @@ router.post(
         .json({ error: true, message: "Request body is required" });
     }
 
-    const { error, message } = await validateGenerateRequestBody(requestBody);
-    if (error) {
-      return res.status(400).json({ error: true, message });
-    }
+    const { recordID, templateID, hbsFile, logo, data } = requestBody;
 
-    const { recordID, templateID, data } = requestBody;
+    let templateWithAttachment;
 
-    const templateWithAttachment = await templateWithAttachments(templateID);
-
-    if (!templateWithAttachment) {
-      return res
-        .status(404)
-        .json({ error: true, message: "Template not found" });
+    try {
+      if (hbsFile) {
+        // (a) Direct mode: caller specifies the .hbs and logo directly.
+        templateWithAttachment = loadTemplateFromDisk(hbsFile, logo);
+      } else if (templateID && templateRegistry[templateID]) {
+        // (b) Registry mode: known templateID → resolve to a file off disk.
+        const entry = templateRegistry[templateID];
+        templateWithAttachment = loadTemplateFromDisk(entry.hbs, entry.logo);
+      } else if (templateID) {
+        // (c) DB fallback: unknown templateID, look it up the old way.
+        const { error, message } = await validateGenerateRequestBody(requestBody);
+        if (error) {
+          return res.status(400).json({ error: true, message });
+        }
+        templateWithAttachment = await templateWithAttachments(templateID);
+        if (!templateWithAttachment) {
+          return res
+            .status(404)
+            .json({ error: true, message: "Template not found" });
+        }
+      } else {
+        return res.status(400).json({
+          error: true,
+          message: "Either templateID or hbsFile is required",
+        });
+      }
+    } catch (err) {
+      return res.status(404).json({ error: true, message: err.message });
     }
 
     const resp = await generatePDF(templateWithAttachment, data);
@@ -51,7 +91,7 @@ router.post(
     res.status(200).json({
       error: false,
       message: "PDF generated successfully",
-      path: res.path,
+      path: resp.path,
       fileName: resp.fileName,
     });
   })

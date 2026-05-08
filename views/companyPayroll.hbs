@@ -5,88 +5,59 @@
   <title>Payroll</title>
   <style>
 
+    /* Reserve room on every page for the Puppeteer-injected header/footer.
+       generate.js extracts the header and footer elements from this template
+       and passes them to Puppeteer's displayHeaderFooter so they repeat on
+       each page. */
     @page {
-    margin: 20px 20px 20px 20px; /* top, right, bottom, left */
-  }
+      /* Top reserves room for the 100px header element AND the 120px logo
+         that overflows below it (≈140px total). Bottom fits the 60px
+         footer + a small cushion so its border-top isn't flush with content. */
+      margin: 145px 20px 75px 20px; /* top, right, bottom, left */
+    }
 
-  @media print {
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      font-size: 12pt;
-      color: black;
-      margin-top: 100px; /* space for header */
-      margin-bottom: 60px; /* space for footer */
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      color: #333;
     }
 
-    .no-print {
-      display: none;
+    @media print {
+      body { font-size: 12pt; color: black; }
+      .no-print { display: none; }
     }
 
-    header {
-      position: fixed;
-      top: 0;
-      height: 100px;
-    }
-  }
+    /* Header/footer styles live INLINE on the elements themselves (not here)
+       because Puppeteer's per-page header/footer template runs in an isolated
+       context where class-based styles don't reliably apply. */
 
-
-  header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100px;
-    border-bottom: 1px solid #000;
-    padding: 10px 40px;
-    background: white;
-  }
-
-  footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    border-top: 1px solid #ccc;
-    text-align: center;
-    font-size: 11px;
-    color: #666;
-    padding: 10px 40px;
-    background: white;
-  }
-
-  body {
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    color: #333;
-    margin-top: 120px;
-  }
-
-    .company-info {
-      text-align: right;
-    }
-
+    .company-info { text-align: right; }
     .company-info .name {
       font-weight: bold;
       font-size: 18px;
       text-transform: uppercase;
     }
 
-    .col {
-      flex: 1;
-      min-width: 250px;
-    }
-
-
     .watermark {
       position: fixed;
-      top: 40%;
-      left: 40%;
+      top: 50%;
+      left: 50%;
       transform: translate(-50%, -50%) rotate(-30deg);
-      opacity: 0.3;
+      opacity: 0.15;
       z-index: 0;
-      width: 500px;
+      width: 450px;
       height: auto;
       pointer-events: none;
+    }
+
+    .content, .summary, .signature {
+      position: relative;
+      z-index: 1;
     }
 
     table {
@@ -101,39 +72,50 @@
       padding: 4px;
       text-align: left;
       word-wrap: break-word;
+      vertical-align: top;
     }
 
-    th {
-      background-color: #f5f5f5;
-    }
+    th { background-color: #f5f5f5; }
+
+    /* Keep table rows from splitting mid-row across pages */
+    tr { page-break-inside: avoid; break-inside: avoid; }
+    thead { display: table-header-group; }       /* repeat headers on each page */
+    tfoot { display: table-footer-group; }
 
     .summary {
       margin-top: 20px;
       font-size: 12px;
     }
 
+    /* Two-column summary: narrow label, wide value */
+    .summary table { table-layout: fixed; }
+    .summary td:first-child { width: 30%; }
+
     .signature {
       display: flex;
       justify-content: space-between;
+      gap: 20px;
       margin-top: 20px;
+      page-break-inside: avoid;
+      break-inside: avoid;
     }
     .signature .col {
-      flex: 1;
-      min-width: 250px;
+      flex: 1 1 0;
+      min-width: 0;            /* allow shrinking; was forcing wrap */
+      page-break-inside: avoid;
+      break-inside: avoid;
     }
 
     .page-break {
-        page-break-before: always;
-        margin-top: 130px; /* Adjust for header */
-
+      page-break-before: always;
     }
 
     .section-title {
-        font-size: 18px;
-        font-weight: bold;
-        text-align: center;
-        margin-bottom: 15px;
-        margin-top: 10px;;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 15px;
+      margin-top: 10px;
     }
 
   </style>
@@ -141,9 +123,9 @@
 
 <body>
     <img src="data:image/png;base64,{{data.attachments.0.fileData}}" class="watermark" alt="Watermark" />
-    <header>
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <div><img src="data:image/png;base64,{{data.attachments.0.fileData}}" style="height: 120px;" /></div>
+    <header style="box-sizing: border-box; width: 100%; height: 100px; margin: 0; padding: 10px 40px; border-bottom: 1px solid #000; background: white; font-family: Arial, sans-serif; color: #333; -webkit-print-color-adjust: exact;">
+      <div style="display: flex; justify-content: space-between; align-items: center; height: 100%;">
+        <div><img src="data:image/png;base64,{{data.attachments.0.fileData}}" alt="Logo" style="height: 120px;" /></div>
         <div style="text-align: right;">
           <div style="font-weight: bold; font-size: 18px; text-transform: uppercase;">HA TRANSPORTATION NW LLC</div>
           <div>23406 Pacific Ave S, Ste 106</div>
@@ -260,10 +242,10 @@
 
       
 
-    <footer>
-      <p>HA Transportation NW LLC – 23406 Pacific Ave S, Ste 106, Kent, WA 98032</p>
-      <p>Phone: +1 (253) 237-2479 | Email: accounting@handatransportation.com</p>
-      <p style="font-style: italic;">Thank you for being a valued partner of HA Transportation.</p>
+    <footer style="box-sizing: border-box; width: 100%; height: 60px; margin: 0; padding: 10px 40px; border-top: 1px solid #ccc; text-align: center; font-size: 11px; color: #666; background: white; font-family: Arial, sans-serif; -webkit-print-color-adjust: exact;">
+      <p style="margin: 2px 0;">HA Transportation NW LLC &ndash; 23406 Pacific Ave S, Ste 106, Kent, WA 98032</p>
+      <p style="margin: 2px 0;">Phone: +1 (253) 237-2479 | Email: accounting@handatransportation.com</p>
+      <p style="margin: 2px 0; font-style: italic;">Thank you for being a valued partner of HA Transportation.</p>
     </footer>
 
 
