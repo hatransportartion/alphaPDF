@@ -18,7 +18,7 @@ module.exports = {
   },
   // Driver Payroll (HA)
   "240ea7b35a094098a93d320ecbffcc95": {
-    hbs: "payroll.hbs",
+    hbs: "driverPayroll.hbs",
     logo: "HAlogo.png",
   },
   // RateCon (HA)
@@ -56,6 +56,5 @@ module.exports = {
 
   // ── Templates without confirmed IDs yet ────────────────────────────
   // TODO: fill these in once you know what Airtable sends:
-  //   "<id>": { hbs: "driverPayroll.hbs",     logo: "HAlogo.png" },
   //   "<id>": { hbs: "payrollAlphaLion.hbs",  logo: "Alpha_Lion_Logo.png" },
 };
