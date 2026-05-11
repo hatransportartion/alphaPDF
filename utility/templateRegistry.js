@@ -18,7 +18,7 @@ module.exports = {
   },
   // Driver Payroll (HA)
   "240ea7b35a094098a93d320ecbffcc95": {
-    hbs: "driverPayroll.hbs",
+    hbs: "payroll.hbs",
     logo: "HAlogo.png",
   },
   // RateCon (HA)
@@ -52,6 +52,11 @@ module.exports = {
   "hughje884a6d44608fe78db22640e69c": {
     hbs: "repairInvoice.hbs",
     logo: "ApexRepair.png",
+  },
+
+  "c2hvdWxkYmF0dGxlbmF0aXZlZGlyZWN0": {
+    hbs: "DriverPayroll.hbs",
+    logo: "HAlogo.png",
   },
 
   // ── Templates without confirmed IDs yet ────────────────────────────
