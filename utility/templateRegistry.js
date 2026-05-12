@@ -55,7 +55,7 @@ module.exports = {
   },
 
   "c2hvdWxkYmF0dGxlbmF0aXZlZGlyZWN0": {
-    hbs: "DriverPayroll.hbs",
+    hbs: "driverPayroll.hbs",
     logo: "HAlogo.png",
   },
 
