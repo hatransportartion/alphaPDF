@@ -186,6 +186,38 @@
       </table>
     </div>
 
+    {{#if data.timesheetData.length}}
+    <div class="content" style="margin-top: 20px;">
+      <div class="section-title" style="font-size: 14px; text-align: left; margin-bottom: 6px;">Timesheet</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Clock In</th>
+            <th>Clock Out</th>
+            <th>Lunch Break</th>
+            <th>Hours</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each data.timesheetData}}
+          <tr>
+            <td>{{date}}</td>
+            <td>{{startTime}}</td>
+            <td>{{stopTime}}</td>
+            <td>{{lunchBreak}}</td>
+            <td>{{hours}}</td>
+          </tr>
+          {{/each}}
+          <tr>
+            <td colspan="4" style="text-align: right;"><strong>Total Hours</strong></td>
+            <td><strong>{{data.totalHours}}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    {{/if}}
+
         <!-- Summary Table -->
     <div class="summary">
       <table>
