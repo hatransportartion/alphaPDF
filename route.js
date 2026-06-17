@@ -55,16 +55,47 @@ router.post(
 
     let templateWithAttachment;
 
+    // ─────────────────────────────────────────────────────────────────
+    // Template resolution: three modes, tried in this order.
+    //
+    // (a) Direct mode  — caller passes `hbsFile` (+ optional `logo`).
+    //     Used for ad-hoc / one-off renders. We read both files straight
+    //     off disk under ./views and ./logo. No DB touch, no registry
+    //     touch. Lowest-friction path; trusts the caller.
+    //
+    // (b) Registry mode — caller passes a known `templateID` that exists
+    //     in utility/templateRegistry.js. We look up the entry
+    //     ({ hbs, logo }) and read both files off disk. No DB touch.
+    //     This is the PRIMARY production path: Airtable scripts send
+    //     a templateID, the registry maps it to the .hbs in this repo,
+    //     so deploying this service is enough to ship template changes
+    //     (no DB sync needed).
+    //
+    // (c) DB fallback  — caller passes a `templateID` we don't know
+    //     about. Validate the request body, then look the template +
+    //     attachments up via Prisma (`templateWithAttachments`). This
+    //     is the legacy path for IDs that haven't been migrated into
+    //     the registry yet. 404 if nothing matches.
+    //
+    // Either `hbsFile` or `templateID` must be present.
+    // ─────────────────────────────────────────────────────────────────
     try {
       if (hbsFile) {
         // (a) Direct mode: caller specifies the .hbs and logo directly.
+        console.log(`[template-fetch] mode=direct hbs=${hbsFile} logo=${logo || "(none)"}`);
         templateWithAttachment = loadTemplateFromDisk(hbsFile, logo);
       } else if (templateID && templateRegistry[templateID]) {
         // (b) Registry mode: known templateID → resolve to a file off disk.
+        // templateRegistry[templateID] = { hbs, logo }; both are filenames
+        // relative to ./views and ./logo respectively.
         const entry = templateRegistry[templateID];
+        console.log(`[template-fetch] mode=registry templateID=${templateID} hbs=${entry.hbs} logo=${entry.logo}`);
         templateWithAttachment = loadTemplateFromDisk(entry.hbs, entry.logo);
       } else if (templateID) {
         // (c) DB fallback: unknown templateID, look it up the old way.
+        // Pulls the template HTML and its logo attachments out of the
+        // PDFTemplate table via Prisma.
+        console.log(`[template-fetch] mode=db-fallback templateID=${templateID} (not in registry)`);
         const { error, message } = await validateGenerateRequestBody(requestBody);
         if (error) {
           return res.status(400).json({ error: true, message });
