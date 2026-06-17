@@ -59,7 +59,9 @@ module.exports = {
     logo: "HAlogo.png",
   },
 
-  // ── Templates without confirmed IDs yet ────────────────────────────
-  // TODO: fill these in once you know what Airtable sends:
-  //   "<id>": { hbs: "payrollAlphaLion.hbs",  logo: "Alpha_Lion_Logo.png" },
+  // ── Alpha Lion ─────────────────────────────────────────────────────
+  "146bbaec5e3f4134ab30d1e26b1eb7a9": {
+    hbs: "payrollAlphaLion.hbs",
+    logo: "Alpha_Lion_Logo.png",
+  },
 };
